@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import Template1 from "../components/templates/Template1"
 import Template2 from "../components/templates/Template2"
 import Template3 from "../components/templates/Template3"
-import html2canvas from "html2canvas"
+import { toPng } from "html-to-image"
 import jsPDF from "jspdf"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
@@ -22,17 +22,18 @@ export default function Preview() {
     if (!resumeRef.current) return
     setExporting(true)
     try {
-      const canvas = await html2canvas(resumeRef.current, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
+      const dataUrl = await toPng(resumeRef.current, {
+        quality: 1,
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
       })
-      const imgData = canvas.toDataURL("image/png")
+      const img = new Image()
+      img.src = dataUrl
+      await new Promise((resolve) => { img.onload = resolve })
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
       const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight)
+      const pdfHeight = (img.height * pdfWidth) / img.width
+      pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight)
       const filename = resumeData.name
         ? `${resumeData.name.replace(/\s+/g, "_")}_Resume.pdf`
         : "Resume.pdf"
