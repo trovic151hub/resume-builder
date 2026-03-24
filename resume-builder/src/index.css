@@ -1,9 +1,13 @@
-/* Tailwind Base + Components + Utilities */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Optional: custom global styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  @apply bg-gray-100 dark:bg-gray-900 font-sans;
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
 }
