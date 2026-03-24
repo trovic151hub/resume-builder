@@ -26,9 +26,9 @@ const accentColors = [
 const inputClass =
   "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm placeholder-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all"
 
-function FormField({ label, children, half }) {
+function FormField({ label, children }) {
   return (
-    <div className={`flex flex-col gap-1 ${half ? "" : ""}`}>
+    <div className="flex flex-col gap-1">
       <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</label>
       {children}
     </div>
@@ -36,21 +36,13 @@ function FormField({ label, children, half }) {
 }
 
 function SectionHeader({ title }) {
-  return (
-    <h3 className="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-4 pt-1">{title}</h3>
-  )
+  return <h3 className="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-4 pt-1">{title}</h3>
 }
 
 function computeProgress(data) {
   const checks = [
-    data.name,
-    data.title,
-    data.email,
-    data.phone,
-    data.location,
-    data.linkedin,
-    data.website,
-    data.summary,
+    data.name, data.title, data.email, data.phone, data.location,
+    data.linkedin, data.website, data.summary,
     data.skills.filter(Boolean).length > 0,
     data.experience.some(e => e.jobTitle || e.company || e.description),
     data.education.some(e => e.degree || e.school),
@@ -67,19 +59,15 @@ export default function Builder() {
 
   const updateExp = (id, field, value) =>
     set("experience", resumeData.experience.map(e => e.id === id ? { ...e, [field]: value } : e))
-
   const addExp = () =>
     set("experience", [...resumeData.experience, { id: Date.now(), jobTitle: "", company: "", startDate: "", endDate: "", current: false, description: "" }])
-
   const removeExp = (id) =>
     set("experience", resumeData.experience.filter(e => e.id !== id))
 
   const updateEdu = (id, field, value) =>
     set("education", resumeData.education.map(e => e.id === id ? { ...e, [field]: value } : e))
-
   const addEdu = () =>
     set("education", [...resumeData.education, { id: Date.now(), degree: "", school: "", year: "", gpa: "" }])
-
   const removeEdu = (id) =>
     set("education", resumeData.education.filter(e => e.id !== id))
 
@@ -88,44 +76,45 @@ export default function Builder() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Header */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Resume Builder</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Resume Builder</h1>
             <p className="text-sm text-slate-500 mt-1">Fill in your details and watch your resume come to life.</p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => { if (confirm("Clear all data and start fresh?")) resetData() }}
-              className="flex items-center gap-2 text-slate-500 hover:text-rose-600 text-sm font-medium border border-slate-200 hover:border-rose-200 px-4 py-2.5 rounded-xl transition-colors"
+              className="flex items-center gap-2 text-slate-500 hover:text-rose-600 text-sm font-medium border border-slate-200 hover:border-rose-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
-              Clear All
+              <span className="hidden sm:inline">Clear All</span>
             </button>
             <Link
               to="/preview"
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-colors shadow-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              Preview & Export
+              <span className="hidden sm:inline">Preview &amp; Export</span>
+              <span className="sm:hidden">Preview</span>
             </Link>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
 
           {/* FORM */}
           <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
 
             {/* Progress bar */}
-            <div className="px-6 pt-5 pb-4 border-b border-slate-100">
+            <div className="px-4 sm:px-6 pt-5 pb-4 border-b border-slate-100">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-slate-600">Resume Completeness</span>
                 <span className="text-xs font-bold" style={{ color: resumeData.accentColor }}>
@@ -143,27 +132,27 @@ export default function Builder() {
             </div>
 
             {/* Template picker */}
-            <div className="px-6 pt-5 pb-5 border-b border-slate-100">
+            <div className="px-4 sm:px-6 pt-5 pb-5 border-b border-slate-100">
               <SectionHeader title="Choose Template" />
-              <div className="grid grid-cols-3 gap-3 mb-4">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
                 {templateOptions.map((t) => (
                   <button
                     key={t.value}
                     onClick={() => set("template", t.value)}
-                    className={`rounded-xl border-2 p-3 text-left transition-all ${
+                    className={`rounded-xl border-2 p-2 sm:p-3 text-left transition-all ${
                       resumeData.template === t.value ? "border-indigo-500 bg-indigo-50" : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    <div className="text-sm font-semibold text-slate-800">{t.label}</div>
-                    <div className="text-xs text-slate-500 mt-0.5">{t.desc}</div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-800">{t.label}</div>
+                    <div className="text-xs text-slate-500 mt-0.5 hidden sm:block">{t.desc}</div>
                   </button>
                 ))}
               </div>
 
-              {/* Accent color picker */}
+              {/* Accent color */}
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide block mb-2">Accent Color</label>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   {accentColors.map((c) => (
                     <button
                       key={c.value}
@@ -182,12 +171,12 @@ export default function Builder() {
               </div>
             </div>
 
-            <div className="px-6 py-6 flex flex-col gap-6">
+            <div className="px-4 sm:px-6 py-6 flex flex-col gap-6">
 
               {/* Personal Info */}
               <div>
                 <SectionHeader title="Personal Info" />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <FormField label="Full Name">
                     <input className={inputClass} placeholder="e.g. Jane Smith" value={resumeData.name} onChange={e => set("name", e.target.value)} />
                   </FormField>
@@ -206,9 +195,11 @@ export default function Builder() {
                   <FormField label="LinkedIn">
                     <input className={inputClass} placeholder="linkedin.com/in/yourname" value={resumeData.linkedin} onChange={e => set("linkedin", e.target.value)} />
                   </FormField>
-                  <FormField label="Website / Portfolio">
-                    <input className={inputClass} placeholder="yourportfolio.com" value={resumeData.website} onChange={e => set("website", e.target.value)} />
-                  </FormField>
+                  <div className="sm:col-span-2">
+                    <FormField label="Website / Portfolio">
+                      <input className={inputClass} placeholder="yourportfolio.com" value={resumeData.website} onChange={e => set("website", e.target.value)} />
+                    </FormField>
+                  </div>
                 </div>
               </div>
 
@@ -254,13 +245,13 @@ export default function Builder() {
                 <div className="flex flex-col gap-4">
                   {resumeData.experience.map((exp, idx) => (
                     <div key={exp.id} className="border border-slate-200 rounded-xl p-4 flex flex-col gap-3">
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-500">Position {idx + 1}</span>
                         {resumeData.experience.length > 1 && (
                           <button onClick={() => removeExp(exp.id)} className="text-xs text-rose-400 hover:text-rose-600 transition-colors">Remove</button>
                         )}
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <FormField label="Job Title">
                           <input className={inputClass} placeholder="e.g. Frontend Developer" value={exp.jobTitle} onChange={e => updateExp(exp.id, "jobTitle", e.target.value)} />
                         </FormField>
@@ -307,13 +298,13 @@ export default function Builder() {
                 <div className="flex flex-col gap-4">
                   {resumeData.education.map((edu, idx) => (
                     <div key={edu.id} className="border border-slate-200 rounded-xl p-4 flex flex-col gap-3">
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-slate-500">Entry {idx + 1}</span>
                         {resumeData.education.length > 1 && (
                           <button onClick={() => removeEdu(edu.id)} className="text-xs text-rose-400 hover:text-rose-600 transition-colors">Remove</button>
                         )}
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <FormField label="Degree / Qualification">
                           <input className={inputClass} placeholder="e.g. BSc Computer Science" value={edu.degree} onChange={e => updateEdu(edu.id, "degree", e.target.value)} />
                         </FormField>
@@ -344,8 +335,8 @@ export default function Builder() {
             </div>
           </div>
 
-          {/* LIVE PREVIEW */}
-          <div className="sticky top-24">
+          {/* LIVE PREVIEW — hidden on mobile, shown on desktop */}
+          <div className="hidden lg:block sticky top-24">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wide">Live Preview</h2>
               <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -366,6 +357,20 @@ export default function Builder() {
                 </motion.div>
               </AnimatePresence>
             </div>
+          </div>
+
+          {/* Mobile preview link banner */}
+          <div className="lg:hidden bg-indigo-50 border border-indigo-100 rounded-2xl p-4 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold text-indigo-800">Ready to see it?</p>
+              <p className="text-xs text-indigo-500 mt-0.5">Tap to preview your resume</p>
+            </div>
+            <Link
+              to="/preview"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors flex-shrink-0"
+            >
+              Preview →
+            </Link>
           </div>
 
         </div>

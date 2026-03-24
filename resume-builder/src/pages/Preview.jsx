@@ -48,7 +48,7 @@ export default function Preview() {
     <div className="min-h-screen bg-slate-100">
       {/* Toolbar */}
       <div className="no-print bg-white border-b border-slate-200 sticky top-16 z-40">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 h-auto min-h-14 py-2 sm:py-0 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0 justify-between">
           <div className="flex items-center gap-3">
             <Link
               to="/builder"
@@ -57,17 +57,17 @@ export default function Preview() {
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Builder
+              Back
             </Link>
-            <span className="text-slate-300">|</span>
-            <span className="text-sm text-slate-500">
+            <span className="text-slate-300 hidden sm:inline">|</span>
+            <span className="text-sm text-slate-500 hidden sm:inline">
               Template: <span className="font-semibold text-slate-700">{templateNames[resumeData.template]}</span>
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 pb-2 sm:pb-0">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-2 text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 text-sm font-medium px-3 sm:px-4 py-2 rounded-lg transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -77,8 +77,8 @@ export default function Preview() {
             <button
               onClick={handleExportPDF}
               disabled={exporting || !hasData}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors"
-              style={{ backgroundColor: exporting ? undefined : resumeData.accentColor }}
+              className="flex items-center gap-2 text-white text-sm font-semibold px-3 sm:px-5 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ backgroundColor: resumeData.accentColor || "#4f46e5" }}
             >
               {exporting ? (
                 <>
@@ -93,7 +93,8 @@ export default function Preview() {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
-                  Download PDF
+                  <span className="hidden sm:inline">Download PDF</span>
+                  <span className="sm:hidden">PDF</span>
                 </>
               )}
             </button>
@@ -102,12 +103,12 @@ export default function Preview() {
       </div>
 
       {/* Resume sheet */}
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
         {!hasData ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow border border-slate-100 p-16 text-center"
+            className="bg-white rounded-2xl shadow border border-slate-100 p-10 sm:p-16 text-center"
           >
             <div className="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

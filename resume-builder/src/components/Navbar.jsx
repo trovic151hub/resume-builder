@@ -1,8 +1,10 @@
+import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Navbar() {
   const { pathname } = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const links = [
     { to: "/", label: "Home" },
@@ -10,11 +12,15 @@ export default function Navbar() {
     { to: "/preview", label: "Preview" },
   ]
 
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+        {/* Logo */}
+        <Link to="/" onClick={closeMenu} className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
             <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -22,7 +28,8 @@ export default function Navbar() {
           <span className="font-bold text-slate-800 text-lg">ResumeForge</span>
         </Link>
 
-        <div className="flex items-center gap-1">
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-1">
           {links.map(({ to, label }) => {
             const active = pathname === to
             return (
@@ -30,9 +37,7 @@ export default function Navbar() {
                 key={to}
                 to={to}
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  active
-                    ? "text-indigo-600"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  active ? "text-indigo-600" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 {label}
@@ -48,13 +53,66 @@ export default function Navbar() {
           })}
         </div>
 
+        {/* Desktop CTA */}
         <Link
           to="/builder"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          className="hidden md:inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
         >
           Build My Resume
         </Link>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {menuOpen
+              ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            }
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden overflow-hidden border-t border-slate-100 bg-white"
+          >
+            <div className="px-4 py-3 flex flex-col gap-1">
+              {links.map(({ to, label }) => {
+                const active = pathname === to
+                return (
+                  <Link
+                    key={to}
+                    to={to}
+                    onClick={closeMenu}
+                    className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                      active ? "bg-indigo-50 text-indigo-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                )
+              })}
+              <Link
+                to="/builder"
+                onClick={closeMenu}
+                className="mt-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors text-center"
+              >
+                Build My Resume
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   )
 }

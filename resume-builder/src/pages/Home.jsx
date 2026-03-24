@@ -51,23 +51,23 @@ export default function Home() {
   return (
     <div className="bg-slate-50">
       {/* Hero */}
-      <section className="max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24 text-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-6 uppercase tracking-wide">
+          <span className="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full mb-5 sm:mb-6 uppercase tracking-wide">
             Free Resume Builder
           </span>
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight mb-5 sm:mb-6">
             Build a Resume That<br />
             <span className="text-indigo-600">Gets You Hired</span>
           </h1>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-10">
+          <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto mb-8 sm:mb-10 px-2">
             Create a polished, professional resume in minutes. Fill in your details, pick a template, and you're done — no sign-up required.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <Link
               to="/builder"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-4 rounded-xl text-base transition-colors shadow-lg shadow-indigo-200"
@@ -88,7 +88,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-16 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden max-w-3xl mx-auto"
+          className="mt-12 sm:mt-16 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden max-w-3xl mx-auto"
         >
           <div className="bg-slate-100 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-400" />
@@ -96,11 +96,11 @@ export default function Home() {
             <span className="w-3 h-3 rounded-full bg-green-400" />
             <span className="ml-4 text-xs text-slate-400 font-mono">resume-builder</span>
           </div>
-          <div className="p-8 flex gap-8 text-left">
-            <div className="w-1/3 border-r border-slate-100 pr-6">
-              <div className="w-16 h-16 rounded-full bg-indigo-100 mb-4" />
-              <div className="h-3 bg-slate-200 rounded w-3/4 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-1/2 mb-6" />
+          <div className="p-4 sm:p-8 flex gap-4 sm:gap-8 text-left">
+            <div className="w-1/3 border-r border-slate-100 pr-3 sm:pr-6">
+              <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-indigo-100 mb-3 sm:mb-4" />
+              <div className="h-2 sm:h-3 bg-slate-200 rounded w-3/4 mb-2" />
+              <div className="h-2 bg-slate-100 rounded w-1/2 mb-4 sm:mb-6" />
               <div className="h-2 bg-indigo-100 rounded w-2/3 mb-2" />
               <div className="h-2 bg-indigo-100 rounded w-1/2 mb-2" />
               <div className="h-2 bg-indigo-100 rounded w-3/4" />
@@ -108,10 +108,10 @@ export default function Home() {
             <div className="flex-1">
               <div className="h-2 bg-slate-200 rounded w-full mb-2" />
               <div className="h-2 bg-slate-100 rounded w-5/6 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-4/6 mb-6" />
+              <div className="h-2 bg-slate-100 rounded w-4/6 mb-4 sm:mb-6" />
               <div className="h-2 bg-slate-200 rounded w-3/4 mb-2" />
               <div className="h-2 bg-slate-100 rounded w-full mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-5/6 mb-6" />
+              <div className="h-2 bg-slate-100 rounded w-5/6 mb-4 sm:mb-6" />
               <div className="h-2 bg-slate-200 rounded w-2/4 mb-2" />
               <div className="h-2 bg-slate-100 rounded w-full mb-2" />
             </div>
@@ -120,9 +120,9 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="bg-white border-y border-slate-100 py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Everything You Need</h2>
+      <section className="bg-white border-y border-slate-100 py-12 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-8 sm:mb-12">Everything You Need</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((f, i) => (
               <motion.div
@@ -145,9 +145,9 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">How It Works</h2>
-        <div className="grid sm:grid-cols-3 gap-8">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 text-center mb-8 sm:mb-12">How It Works</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
           {steps.map((s, i) => (
             <motion.div
               key={i}
@@ -155,7 +155,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15, duration: 0.5 }}
-              className="bg-white rounded-2xl border border-slate-100 shadow-sm p-8"
+              className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8"
             >
               <span className="text-4xl font-extrabold text-indigo-100">{s.number}</span>
               <h3 className="text-lg font-bold text-slate-800 mt-3 mb-2">{s.title}</h3>
@@ -166,13 +166,13 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-indigo-600 py-20">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to land your next job?</h2>
-          <p className="text-indigo-200 mb-8">Start building your resume right now — it's completely free.</p>
+      <section className="bg-indigo-600 py-14 sm:py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to land your next job?</h2>
+          <p className="text-indigo-200 mb-6 sm:mb-8 text-sm sm:text-base">Start building your resume right now — it's completely free.</p>
           <Link
             to="/builder"
-            className="inline-block bg-white text-indigo-700 font-bold px-8 py-4 rounded-xl hover:bg-indigo-50 transition-colors text-base shadow-lg"
+            className="inline-block bg-white text-indigo-700 font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl hover:bg-indigo-50 transition-colors text-base shadow-lg"
           >
             Get Started for Free →
           </Link>
