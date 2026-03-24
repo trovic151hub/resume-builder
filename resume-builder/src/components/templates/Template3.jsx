@@ -1,7 +1,12 @@
 import { motion } from "framer-motion"
 
+function lighten(hex) {
+  return `${hex}22`
+}
+
 export default function Template3({ data }) {
   const skills = data.skills.filter(Boolean)
+  const accent = data.accentColor || "#4f46e5"
 
   return (
     <motion.div
@@ -11,19 +16,21 @@ export default function Template3({ data }) {
       className="font-sans"
     >
       {/* Gradient Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-8">
+      <div className="px-8 py-8" style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)` }}>
         <h1 className="text-3xl font-extrabold text-white tracking-tight">
           {data.name || "Your Name"}
         </h1>
-        <p className="text-indigo-200 font-medium mt-1">
+        <p className="text-white/80 font-medium mt-1 text-base">
           {data.title || "Job Title"}
         </p>
-        {(data.email || data.phone) && (
-          <p className="text-indigo-200 text-xs mt-3 flex items-center gap-3">
-            {data.email && <span>{data.email}</span>}
-            {data.email && data.phone && <span className="opacity-40">|</span>}
-            {data.phone && <span>{data.phone}</span>}
-          </p>
+        {(data.email || data.phone || data.location || data.linkedin || data.website) && (
+          <div className="flex flex-wrap gap-4 mt-4 text-white/70 text-xs">
+            {data.email && <span>✉ {data.email}</span>}
+            {data.phone && <span>✆ {data.phone}</span>}
+            {data.location && <span>📍 {data.location}</span>}
+            {data.linkedin && <span>in {data.linkedin}</span>}
+            {data.website && <span>🌐 {data.website}</span>}
+          </div>
         )}
       </div>
 
@@ -31,7 +38,7 @@ export default function Template3({ data }) {
         {/* Profile */}
         {data.summary && (
           <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">About Me</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>About Me</h2>
             <p className="text-sm text-slate-700 leading-relaxed">{data.summary}</p>
           </section>
         )}
@@ -39,12 +46,13 @@ export default function Template3({ data }) {
         {/* Skills */}
         {skills.length > 0 && (
           <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">Skills</h2>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Skills</h2>
             <div className="flex flex-wrap gap-2">
               {skills.map((s, i) => (
                 <span
                   key={i}
-                  className="bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full"
+                  className="text-xs font-semibold px-3 py-1 rounded-full border"
+                  style={{ backgroundColor: lighten(accent), color: accent, borderColor: `${accent}33` }}
                 >
                   {s}
                 </span>
@@ -55,18 +63,57 @@ export default function Template3({ data }) {
 
         <div className="grid grid-cols-2 gap-6">
           {/* Experience */}
-          {data.experience && (
-            <section>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">Experience</h2>
-              <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{data.experience}</p>
+          {data.experience.some(e => e.jobTitle || e.company || e.description) && (
+            <section className="col-span-2">
+              <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Experience</h2>
+              <div className="flex flex-col gap-4">
+                {data.experience.map((exp) => (
+                  (exp.jobTitle || exp.company || exp.description) ? (
+                    <div key={exp.id} className="flex gap-3">
+                      <div className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <p className="text-sm font-bold text-slate-800">{exp.jobTitle}</p>
+                            <p className="text-xs text-slate-500">{exp.company}</p>
+                          </div>
+                          {(exp.startDate || exp.endDate) && (
+                            <span className="text-xs text-slate-400 whitespace-nowrap ml-4">
+                              {exp.startDate}{exp.startDate && (exp.endDate || exp.current) ? " – " : ""}{exp.current ? "Present" : exp.endDate}
+                            </span>
+                          )}
+                        </div>
+                        {exp.description && (
+                          <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line">{exp.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  ) : null
+                ))}
+              </div>
             </section>
           )}
 
           {/* Education */}
-          {data.education && (
-            <section>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-indigo-600 mb-3">Education</h2>
-              <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{data.education}</p>
+          {data.education.some(e => e.degree || e.school) && (
+            <section className="col-span-2">
+              <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Education</h2>
+              <div className="flex flex-col gap-3">
+                {data.education.map((edu) => (
+                  (edu.degree || edu.school) ? (
+                    <div key={edu.id} className="flex gap-3">
+                      <div className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
+                      <div className="flex-1 flex items-start justify-between">
+                        <div>
+                          <p className="text-sm font-bold text-slate-800">{edu.degree}</p>
+                          <p className="text-xs text-slate-500">{edu.school}{edu.gpa ? ` · GPA: ${edu.gpa}` : ""}</p>
+                        </div>
+                        {edu.year && <span className="text-xs text-slate-400 ml-4">{edu.year}</span>}
+                      </div>
+                    </div>
+                  ) : null
+                ))}
+              </div>
             </section>
           )}
         </div>
