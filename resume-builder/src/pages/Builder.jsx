@@ -8,10 +8,75 @@ import { motion, AnimatePresence } from "framer-motion"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
 
+const TemplateThumbnailClassic = () => (
+  <svg viewBox="0 0 60 72" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="72" rx="3" fill="#f8fafc"/>
+    <rect x="0" y="0" width="60" height="18" rx="3" fill="#4f46e5" opacity="0.15"/>
+    <rect x="8" y="5" width="22" height="4" rx="1.5" fill="#4f46e5" opacity="0.7"/>
+    <rect x="8" y="11" width="14" height="2.5" rx="1" fill="#94a3b8" opacity="0.6"/>
+    <rect x="8" y="22" width="44" height="2" rx="1" fill="#cbd5e1"/>
+    <rect x="8" y="26" width="36" height="2" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="30" width="40" height="2" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="36" width="20" height="2.5" rx="1" fill="#4f46e5" opacity="0.5"/>
+    <rect x="8" y="40" width="44" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="43" width="38" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="46" width="42" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="52" width="20" height="2.5" rx="1" fill="#4f46e5" opacity="0.5"/>
+    <rect x="8" y="57" width="44" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="8" y="60" width="30" height="1.5" rx="1" fill="#e2e8f0"/>
+  </svg>
+)
+
+const TemplateThumbnailSidebar = () => (
+  <svg viewBox="0 0 60 72" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="72" rx="3" fill="#f8fafc"/>
+    <rect x="0" y="0" width="20" height="72" rx="3" fill="#4f46e5" opacity="0.12"/>
+    <rect x="3" y="6" width="14" height="14" rx="7" fill="#4f46e5" opacity="0.25"/>
+    <rect x="3" y="23" width="14" height="2" rx="1" fill="#4f46e5" opacity="0.5"/>
+    <rect x="3" y="27" width="10" height="1.5" rx="1" fill="#94a3b8" opacity="0.5"/>
+    <rect x="3" y="34" width="14" height="2" rx="1" fill="#4f46e5" opacity="0.4"/>
+    <rect x="3" y="38" width="12" height="1.5" rx="1" fill="#94a3b8" opacity="0.4"/>
+    <rect x="3" y="41" width="10" height="1.5" rx="1" fill="#94a3b8" opacity="0.4"/>
+    <rect x="3" y="44" width="12" height="1.5" rx="1" fill="#94a3b8" opacity="0.4"/>
+    <rect x="25" y="6" width="28" height="3" rx="1.5" fill="#1e293b" opacity="0.6"/>
+    <rect x="25" y="11" width="18" height="2" rx="1" fill="#94a3b8" opacity="0.5"/>
+    <rect x="25" y="18" width="28" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="21" width="22" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="28" width="16" height="2" rx="1" fill="#4f46e5" opacity="0.5"/>
+    <rect x="25" y="32" width="28" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="35" width="24" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="38" width="26" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="45" width="16" height="2" rx="1" fill="#4f46e5" opacity="0.5"/>
+    <rect x="25" y="49" width="28" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="25" y="52" width="20" height="1.5" rx="1" fill="#e2e8f0"/>
+  </svg>
+)
+
+const TemplateThumbnailModern = () => (
+  <svg viewBox="0 0 60 72" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="72" rx="3" fill="#f8fafc"/>
+    <rect x="0" y="0" width="5" height="72" rx="2" fill="#4f46e5" opacity="0.7"/>
+    <rect x="10" y="6" width="28" height="5" rx="2" fill="#1e293b" opacity="0.7"/>
+    <rect x="10" y="13" width="18" height="2.5" rx="1" fill="#4f46e5" opacity="0.6"/>
+    <rect x="10" y="17" width="40" height="1.5" rx="1" fill="#94a3b8" opacity="0.5"/>
+    <rect x="10" y="20" width="34" height="1.5" rx="1" fill="#94a3b8" opacity="0.4"/>
+    <rect x="10" y="27" width="20" height="2.5" rx="1" fill="#4f46e5" opacity="0.55"/>
+    <rect x="10" y="31" width="44" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="34" width="38" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="37" width="42" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="43" width="20" height="2.5" rx="1" fill="#4f46e5" opacity="0.55"/>
+    <rect x="10" y="47" width="44" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="50" width="30" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="57" width="20" height="2.5" rx="1" fill="#4f46e5" opacity="0.55"/>
+    <rect x="10" y="61" width="44" height="1.5" rx="1" fill="#e2e8f0"/>
+    <rect x="10" y="64" width="36" height="1.5" rx="1" fill="#e2e8f0"/>
+  </svg>
+)
+
 const templateOptions = [
-  { value: "template1", label: "Classic", desc: "Clean & traditional" },
-  { value: "template2", label: "Sidebar", desc: "Two-column layout" },
-  { value: "template3", label: "Modern", desc: "Bold & contemporary" },
+  { value: "template1", label: "Classic", desc: "Clean & traditional", Thumb: TemplateThumbnailClassic },
+  { value: "template2", label: "Sidebar", desc: "Two-column layout", Thumb: TemplateThumbnailSidebar },
+  { value: "template3", label: "Modern", desc: "Bold & contemporary", Thumb: TemplateThumbnailModern },
 ]
 
 const accentColors = [
@@ -36,7 +101,12 @@ function FormField({ label, children }) {
 }
 
 function SectionHeader({ title }) {
-  return <h3 className="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-4 pt-1">{title}</h3>
+  return (
+    <div className="flex items-center gap-2 mb-4 pt-1">
+      <h3 className="text-xs font-bold text-slate-700 uppercase tracking-widest">{title}</h3>
+      <div className="flex-1 h-px bg-slate-100" />
+    </div>
+  )
 }
 
 function computeProgress(data) {
@@ -135,18 +205,28 @@ export default function Builder() {
             <div className="px-4 sm:px-6 pt-5 pb-5 border-b border-slate-100">
               <SectionHeader title="Choose Template" />
               <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
-                {templateOptions.map((t) => (
-                  <button
-                    key={t.value}
-                    onClick={() => set("template", t.value)}
-                    className={`rounded-xl border-2 p-2 sm:p-3 text-left transition-all ${
-                      resumeData.template === t.value ? "border-indigo-500 bg-indigo-50" : "border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    <div className="text-xs sm:text-sm font-semibold text-slate-800">{t.label}</div>
-                    <div className="text-xs text-slate-500 mt-0.5 hidden sm:block">{t.desc}</div>
-                  </button>
-                ))}
+                {templateOptions.map((t) => {
+                  const isActive = resumeData.template === t.value
+                  return (
+                    <button
+                      key={t.value}
+                      onClick={() => set("template", t.value)}
+                      className={`rounded-xl border-2 p-2 text-left transition-all flex flex-col gap-2 ${
+                        isActive ? "border-indigo-500 bg-indigo-50 shadow-sm shadow-indigo-100" : "border-slate-200 hover:border-indigo-300 hover:bg-slate-50"
+                      }`}
+                    >
+                      <div className={`w-full rounded-lg overflow-hidden h-14 sm:h-16 flex items-center justify-center ${isActive ? "bg-white" : "bg-slate-50"}`}>
+                        <div className="w-10 h-12 sm:w-12 sm:h-14">
+                          <t.Thumb />
+                        </div>
+                      </div>
+                      <div>
+                        <div className={`text-xs font-bold ${isActive ? "text-indigo-600" : "text-slate-700"}`}>{t.label}</div>
+                        <div className="text-xs text-slate-400 mt-0.5 hidden sm:block leading-tight">{t.desc}</div>
+                      </div>
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Accent color */}
@@ -344,7 +424,7 @@ export default function Builder() {
                 Auto-saving
               </span>
             </div>
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden relative">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={resumeData.template}
@@ -356,6 +436,22 @@ export default function Builder() {
                   <SelectedTemplate data={resumeData} />
                 </motion.div>
               </AnimatePresence>
+              {!resumeData.name && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl gap-3 pointer-events-none"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center">
+                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-semibold text-slate-700">Your resume appears here</p>
+                  <p className="text-xs text-slate-400 text-center max-w-[160px] leading-relaxed">Start filling in your details on the left to see a live preview</p>
+                </motion.div>
+              )}
             </div>
           </div>
 

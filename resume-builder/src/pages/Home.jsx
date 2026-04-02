@@ -88,32 +88,71 @@ export default function Home() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="mt-12 sm:mt-16 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden max-w-3xl mx-auto"
+          className="mt-12 sm:mt-16 bg-white rounded-2xl shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden max-w-3xl mx-auto"
         >
-          <div className="bg-slate-100 border-b border-slate-200 px-4 py-3 flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-red-400" />
-            <span className="w-3 h-3 rounded-full bg-yellow-400" />
-            <span className="w-3 h-3 rounded-full bg-green-400" />
-            <span className="ml-4 text-xs text-slate-400 font-mono">resume-builder</span>
-          </div>
-          <div className="p-4 sm:p-8 flex gap-4 sm:gap-8 text-left">
-            <div className="w-1/3 border-r border-slate-100 pr-3 sm:pr-6">
-              <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-indigo-100 mb-3 sm:mb-4" />
-              <div className="h-2 sm:h-3 bg-slate-200 rounded w-3/4 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-1/2 mb-4 sm:mb-6" />
-              <div className="h-2 bg-indigo-100 rounded w-2/3 mb-2" />
-              <div className="h-2 bg-indigo-100 rounded w-1/2 mb-2" />
-              <div className="h-2 bg-indigo-100 rounded w-3/4" />
+          {/* Browser chrome */}
+          <div className="bg-slate-100 border-b border-slate-200 px-4 py-2.5 flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+            <div className="ml-3 flex-1 bg-white rounded-md px-3 py-1 flex items-center gap-2 max-w-xs mx-auto">
+              <svg className="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span className="text-xs text-slate-400 font-mono truncate">resumeforge.replit.app/builder</span>
             </div>
-            <div className="flex-1">
-              <div className="h-2 bg-slate-200 rounded w-full mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-5/6 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-4/6 mb-4 sm:mb-6" />
-              <div className="h-2 bg-slate-200 rounded w-3/4 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-full mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-5/6 mb-4 sm:mb-6" />
-              <div className="h-2 bg-slate-200 rounded w-2/4 mb-2" />
-              <div className="h-2 bg-slate-100 rounded w-full mb-2" />
+          </div>
+          {/* App content simulation */}
+          <div className="flex text-left" style={{ height: "220px" }}>
+            {/* Left: form panel */}
+            <div className="w-1/2 border-r border-slate-100 p-4 flex flex-col gap-2.5 overflow-hidden">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <div className="h-1.5 bg-slate-200 rounded w-20" />
+              </div>
+              {/* Template picker mini */}
+              <div className="flex gap-1.5">
+                <div className="flex-1 h-7 rounded-lg bg-indigo-50 border-2 border-indigo-300 flex items-center justify-center">
+                  <div className="h-1 bg-indigo-300 rounded w-8" />
+                </div>
+                <div className="flex-1 h-7 rounded-lg bg-slate-50 border border-slate-200" />
+                <div className="flex-1 h-7 rounded-lg bg-slate-50 border border-slate-200" />
+              </div>
+              {/* Fields */}
+              <div className="grid grid-cols-2 gap-1.5">
+                <div className="h-6 bg-slate-100 rounded-lg border border-slate-200" />
+                <div className="h-6 bg-slate-100 rounded-lg border border-slate-200" />
+                <div className="h-6 bg-slate-100 rounded-lg border border-slate-200" />
+                <div className="h-6 bg-slate-100 rounded-lg border border-slate-200" />
+              </div>
+              <div className="h-10 bg-slate-100 rounded-lg border border-slate-200" />
+              {/* Skills pills */}
+              <div className="flex gap-1 flex-wrap">
+                <div className="h-4 w-10 rounded-full bg-indigo-500 opacity-70" />
+                <div className="h-4 w-14 rounded-full bg-indigo-500 opacity-70" />
+                <div className="h-4 w-8 rounded-full bg-indigo-500 opacity-70" />
+              </div>
+            </div>
+            {/* Right: resume preview */}
+            <div className="w-1/2 p-4 overflow-hidden">
+              <div className="h-full bg-slate-50 rounded-xl border border-slate-100 p-3 flex flex-col gap-1.5">
+                <div className="h-3 bg-slate-800 rounded w-2/3 opacity-60" />
+                <div className="h-2 bg-indigo-400 rounded w-1/3 opacity-60 mb-1" />
+                <div className="h-px bg-slate-200 w-full mb-1" />
+                <div className="h-1.5 bg-slate-200 rounded w-full opacity-80" />
+                <div className="h-1.5 bg-slate-200 rounded w-5/6 opacity-60" />
+                <div className="h-1.5 bg-slate-200 rounded w-4/6 opacity-50 mb-1" />
+                <div className="h-2 bg-indigo-300 rounded w-1/3 opacity-70" />
+                <div className="h-1.5 bg-slate-200 rounded w-full opacity-70" />
+                <div className="h-1.5 bg-slate-200 rounded w-4/5 opacity-60" />
+                <div className="h-1.5 bg-slate-200 rounded w-5/6 opacity-50 mb-1" />
+                <div className="h-2 bg-indigo-300 rounded w-1/4 opacity-70" />
+                <div className="flex gap-1 mt-0.5">
+                  <div className="h-3 w-8 rounded-full bg-indigo-200 opacity-80" />
+                  <div className="h-3 w-10 rounded-full bg-indigo-200 opacity-80" />
+                  <div className="h-3 w-6 rounded-full bg-indigo-200 opacity-80" />
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
