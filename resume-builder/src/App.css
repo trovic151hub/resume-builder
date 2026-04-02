@@ -9,6 +9,16 @@ textarea {
   white-space: pre-wrap;
 }
 
+/* Hide all scrollbars globally */
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
 @media print {
   .no-print {
     display: none !important;
