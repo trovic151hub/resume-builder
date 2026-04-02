@@ -86,11 +86,11 @@ export default function Template1({ data }) {
           <div className="flex flex-col gap-4">
             {data.experience.map((exp) => (
               (exp.jobTitle || exp.company || exp.description) ? (
-                <div key={exp.id}>
+                <div key={exp.id} className="overflow-hidden">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-slate-800">{exp.jobTitle}</p>
-                      <p className="text-sm text-slate-500">{exp.company}</p>
+                    <div className="min-w-0 overflow-hidden">
+                      <p className="text-sm font-bold text-slate-800 break-words">{exp.jobTitle}</p>
+                      <p className="text-sm text-slate-500 break-words">{exp.company}</p>
                     </div>
                     {(exp.startDate || exp.endDate) && (
                       <span className="text-xs text-slate-400 whitespace-nowrap ml-4">

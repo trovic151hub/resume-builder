@@ -99,9 +99,9 @@ export default function Template3({ data }) {
                       <div className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
-                          <div>
-                            <p className="text-sm font-bold text-slate-800">{exp.jobTitle}</p>
-                            <p className="text-xs text-slate-500">{exp.company}</p>
+                          <div className="min-w-0 overflow-hidden">
+                            <p className="text-sm font-bold text-slate-800 break-words">{exp.jobTitle}</p>
+                            <p className="text-xs text-slate-500 break-words">{exp.company}</p>
                           </div>
                           {(exp.startDate || exp.endDate) && (
                             <span className="text-xs text-slate-400 whitespace-nowrap ml-4">
