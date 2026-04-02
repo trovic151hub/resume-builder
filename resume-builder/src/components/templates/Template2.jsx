@@ -84,7 +84,7 @@ export default function Template2({ data }) {
         {data.summary && (
           <section>
             <h2 className="text-xs font-bold uppercase tracking-widest mb-2 pb-1 border-b border-slate-100" style={{ color: accent }}>Profile</h2>
-            <p className="text-sm text-slate-700 leading-relaxed">{data.summary}</p>
+            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">{data.summary}</p>
           </section>
         )}
 
@@ -107,7 +107,7 @@ export default function Template2({ data }) {
                       )}
                     </div>
                     {exp.description && (
-                      <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line">{exp.description}</p>
+                      <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl">{exp.description}</p>
                     )}
                   </div>
                 ) : null
