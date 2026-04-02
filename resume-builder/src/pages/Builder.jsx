@@ -5,7 +5,7 @@ import Template1 from "../components/templates/Template1"
 import Template2 from "../components/templates/Template2"
 import Template3 from "../components/templates/Template3"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
 
@@ -97,6 +97,15 @@ function FormField({ label, children }) {
     <div className="flex flex-col gap-1">
       <label className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{label}</label>
       {children}
+    </div>
+  )
+}
+
+function IconInput({ icon: Icon, ...props }) {
+  return (
+    <div className="relative">
+      <Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+      <input {...props} className={`${props.className} pl-8`} />
     </div>
   )
 }
@@ -270,20 +279,20 @@ export default function Builder() {
                     <input className={inputClass} placeholder="e.g. Software Engineer" value={resumeData.title} onChange={e => set("title", e.target.value)} />
                   </FormField>
                   <FormField label="Email">
-                    <input className={inputClass} type="email" placeholder="you@email.com" value={resumeData.email} onChange={e => set("email", e.target.value)} />
+                    <IconInput icon={Mail} className={inputClass} type="email" placeholder="you@email.com" value={resumeData.email} onChange={e => set("email", e.target.value)} />
                   </FormField>
                   <FormField label="Phone">
-                    <input className={inputClass} placeholder="+1 555 000 0000" value={resumeData.phone} onChange={e => set("phone", e.target.value)} />
+                    <IconInput icon={Phone} className={inputClass} placeholder="+1 555 000 0000" value={resumeData.phone} onChange={e => set("phone", e.target.value)} />
                   </FormField>
                   <FormField label="Location">
-                    <input className={inputClass} placeholder="City, Country" value={resumeData.location} onChange={e => set("location", e.target.value)} />
+                    <IconInput icon={MapPin} className={inputClass} placeholder="City, Country" value={resumeData.location} onChange={e => set("location", e.target.value)} />
                   </FormField>
                   <FormField label="LinkedIn">
-                    <input className={inputClass} placeholder="linkedin.com/in/yourname" value={resumeData.linkedin} onChange={e => set("linkedin", e.target.value)} />
+                    <IconInput icon={Link2} className={inputClass} placeholder="linkedin.com/in/yourname" value={resumeData.linkedin} onChange={e => set("linkedin", e.target.value)} />
                   </FormField>
                   <div className="sm:col-span-2">
                     <FormField label="Website / Portfolio">
-                      <input className={inputClass} placeholder="yourportfolio.com" value={resumeData.website} onChange={e => set("website", e.target.value)} />
+                      <IconInput icon={Globe} className={inputClass} placeholder="yourportfolio.com" value={resumeData.website} onChange={e => set("website", e.target.value)} />
                     </FormField>
                   </div>
                 </div>

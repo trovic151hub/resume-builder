@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template1({ data }) {
   const skills = data.skills.filter(Boolean)
@@ -21,12 +22,37 @@ export default function Template1({ data }) {
           {data.title || "Job Title"}
         </p>
         {hasContact && (
-          <div className="flex flex-wrap gap-3 mt-3 text-xs text-slate-500">
-            {data.email && <span>✉ {data.email}</span>}
-            {data.phone && <span>✆ {data.phone}</span>}
-            {data.location && <span>📍 {data.location}</span>}
-            {data.linkedin && <span>in {data.linkedin}</span>}
-            {data.website && <span>🌐 {data.website}</span>}
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3 text-xs text-slate-500">
+            {data.email && (
+              <span className="flex items-center gap-1">
+                <Mail className="w-3 h-3 flex-shrink-0" />
+                {data.email}
+              </span>
+            )}
+            {data.phone && (
+              <span className="flex items-center gap-1">
+                <Phone className="w-3 h-3 flex-shrink-0" />
+                {data.phone}
+              </span>
+            )}
+            {data.location && (
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 flex-shrink-0" />
+                {data.location}
+              </span>
+            )}
+            {data.linkedin && (
+              <span className="flex items-center gap-1">
+                <Link2 className="w-3 h-3 flex-shrink-0" />
+                {data.linkedin}
+              </span>
+            )}
+            {data.website && (
+              <span className="flex items-center gap-1">
+                <Globe className="w-3 h-3 flex-shrink-0" />
+                {data.website}
+              </span>
+            )}
           </div>
         )}
       </div>

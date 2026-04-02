@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 function lighten(hex) {
   return `${hex}22`
@@ -24,12 +25,37 @@ export default function Template3({ data }) {
           {data.title || "Job Title"}
         </p>
         {(data.email || data.phone || data.location || data.linkedin || data.website) && (
-          <div className="flex flex-wrap gap-4 mt-4 text-white/70 text-xs">
-            {data.email && <span>✉ {data.email}</span>}
-            {data.phone && <span>✆ {data.phone}</span>}
-            {data.location && <span>📍 {data.location}</span>}
-            {data.linkedin && <span>in {data.linkedin}</span>}
-            {data.website && <span>🌐 {data.website}</span>}
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-4 text-white/75 text-xs">
+            {data.email && (
+              <span className="flex items-center gap-1">
+                <Mail className="w-3 h-3 flex-shrink-0" />
+                {data.email}
+              </span>
+            )}
+            {data.phone && (
+              <span className="flex items-center gap-1">
+                <Phone className="w-3 h-3 flex-shrink-0" />
+                {data.phone}
+              </span>
+            )}
+            {data.location && (
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 flex-shrink-0" />
+                {data.location}
+              </span>
+            )}
+            {data.linkedin && (
+              <span className="flex items-center gap-1">
+                <Link2 className="w-3 h-3 flex-shrink-0" />
+                {data.linkedin}
+              </span>
+            )}
+            {data.website && (
+              <span className="flex items-center gap-1">
+                <Globe className="w-3 h-3 flex-shrink-0" />
+                {data.website}
+              </span>
+            )}
           </div>
         )}
       </div>

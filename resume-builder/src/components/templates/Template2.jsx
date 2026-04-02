@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template2({ data }) {
   const skills = data.skills.filter(Boolean)
@@ -27,12 +28,37 @@ export default function Template2({ data }) {
         {(data.email || data.phone || data.location || data.linkedin || data.website) && (
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 sm:mb-3">Contact</h2>
-            <div className="flex flex-col gap-1.5">
-              {data.email && <p className="text-xs text-slate-300 break-all">{data.email}</p>}
-              {data.phone && <p className="text-xs text-slate-300">{data.phone}</p>}
-              {data.location && <p className="text-xs text-slate-300">{data.location}</p>}
-              {data.linkedin && <p className="text-xs text-slate-300 break-all">{data.linkedin}</p>}
-              {data.website && <p className="text-xs text-slate-300 break-all">{data.website}</p>}
+            <div className="flex flex-col gap-2">
+              {data.email && (
+                <div className="flex items-start gap-2">
+                  <Mail className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-slate-300 break-all">{data.email}</p>
+                </div>
+              )}
+              {data.phone && (
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                  <p className="text-xs text-slate-300">{data.phone}</p>
+                </div>
+              )}
+              {data.location && (
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                  <p className="text-xs text-slate-300">{data.location}</p>
+                </div>
+              )}
+              {data.linkedin && (
+                <div className="flex items-start gap-2">
+                  <Link2 className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-slate-300 break-all">{data.linkedin}</p>
+                </div>
+              )}
+              {data.website && (
+                <div className="flex items-start gap-2">
+                  <Globe className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-slate-300 break-all">{data.website}</p>
+                </div>
+              )}
             </div>
           </div>
         )}
