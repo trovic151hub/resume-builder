@@ -125,6 +125,16 @@ export default function Builder() {
   const SelectedTemplate = templates[resumeData.template]
   const progress = computeProgress(resumeData)
 
+  const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
+
+  React.useEffect(() => {
+    const parsed = skillsRaw.split(",").map(s => s.trim()).filter(Boolean)
+    const current = resumeData.skills
+    if (parsed.join(",") !== current.join(",")) {
+      setSkillsRaw(current.join(", "))
+    }
+  }, [resumeData.skills])
+
   const set = (field, value) => setResumeData({ ...resumeData, [field]: value })
 
   const updateExp = (id, field, value) =>
@@ -304,8 +314,16 @@ export default function Builder() {
                   <input
                     className={inputClass}
                     placeholder="e.g. React, Node.js, TypeScript, PostgreSQL"
-                    value={resumeData.skills.join(", ")}
-                    onChange={e => set("skills", e.target.value.split(",").map(s => s.trim()).filter(Boolean))}
+                    value={skillsRaw}
+                    onChange={e => {
+                      const raw = e.target.value
+                      setSkillsRaw(raw)
+                      set("skills", raw.split(",").map(s => s.trim()).filter(Boolean))
+                    }}
+                    onBlur={() => {
+                      const cleaned = resumeData.skills.join(", ")
+                      setSkillsRaw(cleaned)
+                    }}
                   />
                 </FormField>
                 {resumeData.skills.filter(Boolean).length > 0 && (
