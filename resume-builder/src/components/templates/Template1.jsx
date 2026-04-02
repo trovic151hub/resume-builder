@@ -11,7 +11,7 @@ export default function Template1({ data }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="p-8 font-sans"
+      className="p-8 font-sans overflow-hidden"
     >
       {/* Header */}
       <div className="pb-5 mb-6" style={{ borderBottom: `2px solid ${accent}` }}>
@@ -61,7 +61,7 @@ export default function Template1({ data }) {
       {data.summary && (
         <section className="mb-6">
           <h2 className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: accent }}>Profile</h2>
-          <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">{data.summary}</p>
+          <p className="text-sm text-slate-700 leading-relaxed max-w-4xl break-words">{data.summary}</p>
         </section>
       )}
 
@@ -99,7 +99,7 @@ export default function Template1({ data }) {
                     )}
                   </div>
                   {exp.description && (
-                    <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl">{exp.description}</p>
+                    <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl break-words">{exp.description}</p>
                   )}
                 </div>
               ) : null

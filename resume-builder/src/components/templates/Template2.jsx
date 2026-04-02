@@ -80,11 +80,11 @@ export default function Template2({ data }) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 sm:p-7 flex flex-col gap-5">
+      <div className="flex-1 min-w-0 p-6 sm:p-7 flex flex-col gap-5 overflow-hidden">
         {data.summary && (
           <section>
             <h2 className="text-xs font-bold uppercase tracking-widest mb-2 pb-1 border-b border-slate-100" style={{ color: accent }}>Profile</h2>
-            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">{data.summary}</p>
+            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl break-words">{data.summary}</p>
           </section>
         )}
 
@@ -107,7 +107,7 @@ export default function Template2({ data }) {
                       )}
                     </div>
                     {exp.description && (
-                      <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl">{exp.description}</p>
+                      <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl break-words">{exp.description}</p>
                     )}
                   </div>
                 ) : null

@@ -65,7 +65,7 @@ export default function Template3({ data }) {
         {data.summary && (
           <section>
             <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>About Me</h2>
-            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl">{data.summary}</p>
+            <p className="text-sm text-slate-700 leading-relaxed max-w-4xl break-words">{data.summary}</p>
           </section>
         )}
 
@@ -97,7 +97,7 @@ export default function Template3({ data }) {
                   (exp.jobTitle || exp.company || exp.description) ? (
                     <div key={exp.id} className="flex gap-3">
                       <div className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between">
                           <div>
                             <p className="text-sm font-bold text-slate-800">{exp.jobTitle}</p>
@@ -110,7 +110,7 @@ export default function Template3({ data }) {
                           )}
                         </div>
                         {exp.description && (
-                          <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl">{exp.description}</p>
+                          <p className="text-xs text-slate-600 leading-relaxed mt-1 whitespace-pre-line max-w-4xl break-words">{exp.description}</p>
                         )}
                       </div>
                     </div>
