@@ -7,6 +7,7 @@ import Template2 from "../components/templates/Template2"
 import Template3 from "../components/templates/Template3"
 import { toPng } from "html-to-image"
 import jsPDF from "jspdf"
+import { ChevronLeft, Printer, Download, Loader2, FileText } from "lucide-react"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
 const templateNames = { template1: "Classic", template2: "Sidebar", template3: "Modern" }
@@ -55,9 +56,7 @@ export default function Preview() {
               to="/builder"
               className="flex items-center gap-2 text-slate-600 hover:text-slate-900 text-sm font-medium transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
+              <ChevronLeft className="w-4 h-4" />
               Back
             </Link>
             <span className="text-slate-300 hidden sm:inline">|</span>
@@ -70,9 +69,7 @@ export default function Preview() {
               onClick={() => window.print()}
               className="flex items-center gap-2 text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-300 text-sm font-medium px-3 sm:px-4 py-2 rounded-lg transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-              </svg>
+              <Printer className="w-4 h-4" />
               Print
             </button>
             <button
@@ -83,17 +80,12 @@ export default function Preview() {
             >
               {exporting ? (
                 <>
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                  </svg>
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   Generating...
                 </>
               ) : (
                 <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
+                  <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Download PDF</span>
                   <span className="sm:hidden">PDF</span>
                 </>
@@ -112,9 +104,7 @@ export default function Preview() {
             className="bg-white rounded-2xl shadow border border-slate-100 p-10 sm:p-16 text-center"
           >
             <div className="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+              <FileText className="w-8 h-8 text-indigo-400" />
             </div>
             <h2 className="text-xl font-bold text-slate-800 mb-2">Your resume is empty</h2>
             <p className="text-slate-500 text-sm mb-6">Head over to the builder and fill in your details to see a preview here.</p>

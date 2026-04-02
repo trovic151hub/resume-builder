@@ -5,6 +5,7 @@ import Template1 from "../components/templates/Template1"
 import Template2 from "../components/templates/Template2"
 import Template3 from "../components/templates/Template3"
 import { motion, AnimatePresence } from "framer-motion"
+import { Trash2, Eye, Plus, Pencil } from "lucide-react"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
 
@@ -169,19 +170,14 @@ export default function Builder() {
               onClick={() => { if (confirm("Clear all data and start fresh?")) resetData() }}
               className="flex items-center gap-2 text-slate-500 hover:text-rose-600 text-sm font-medium border border-slate-200 hover:border-rose-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
+              <Trash2 className="w-4 h-4" />
               <span className="hidden sm:inline">Clear All</span>
             </button>
             <Link
               to="/preview"
               className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-colors shadow-sm"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
+              <Eye className="w-4 h-4" />
               <span className="hidden sm:inline">Preview &amp; Export</span>
               <span className="sm:hidden">Preview</span>
             </Link>
@@ -382,9 +378,7 @@ export default function Builder() {
                     onClick={addExp}
                     className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-indigo-300 text-slate-500 hover:text-indigo-600 rounded-xl py-3 text-sm font-medium transition-colors"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
+                    <Plus className="w-4 h-4" />
                     Add Another Position
                   </button>
                 </div>
@@ -422,9 +416,7 @@ export default function Builder() {
                     onClick={addEdu}
                     className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-indigo-300 text-slate-500 hover:text-indigo-600 rounded-xl py-3 text-sm font-medium transition-colors"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
+                    <Plus className="w-4 h-4" />
                     Add Another Entry
                   </button>
                 </div>
@@ -462,9 +454,7 @@ export default function Builder() {
                   className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl gap-3 pointer-events-none"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center">
-                    <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                    </svg>
+                    <Pencil className="w-6 h-6 text-indigo-400" />
                   </div>
                   <p className="text-sm font-semibold text-slate-700">Your resume appears here</p>
                   <p className="text-xs text-slate-400 text-center max-w-[160px] leading-relaxed">Start filling in your details on the left to see a live preview</p>
