@@ -1,19 +1,31 @@
 import { useState } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
-import { FileText, Menu, X } from "lucide-react"
+import { FileText, Menu, X, User, LogOut } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
 
 export default function Navbar() {
   const { pathname } = useLocation()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   const links = [
     { to: "/", label: "Home" },
     { to: "/builder", label: "Builder" },
     { to: "/preview", label: "Preview" },
+    ...(user ? [{ to: "/resumes", label: "My Resumes" }] : []),
   ]
 
   const closeMenu = () => setMenuOpen(false)
+
+  const handleLogout = async () => {
+    setUserMenuOpen(false)
+    closeMenu()
+    await logout()
+    navigate("/")
+  }
 
   return (
     <nav className="no-print sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
@@ -52,13 +64,62 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Desktop CTA */}
-        <Link
-          to="/builder"
-          className="hidden md:inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
-        >
-          Build My Resume
-        </Link>
+        {/* Desktop CTA / Auth */}
+        <div className="hidden md:flex items-center gap-3">
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-semibold text-sm hover:bg-indigo-100 transition-colors"
+              >
+                {(user.email?.[0] || "U").toUpperCase()}
+              </button>
+              <AnimatePresence>
+                {userMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg py-1.5 overflow-hidden"
+                  >
+                    <p className="px-3 py-2 text-xs text-slate-400 truncate border-b border-slate-100">
+                      {user.email}
+                    </p>
+                    <Link
+                      to="/resumes"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="flex items-center gap-2 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                    >
+                      <User className="w-4 h-4" />
+                      My Resumes
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-600 hover:bg-rose-50"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              Sign In
+            </Link>
+          )}
+          <Link
+            to="/builder"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+          >
+            Build My Resume
+          </Link>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -103,6 +164,23 @@ export default function Navbar() {
               >
                 Build My Resume
               </Link>
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out ({user.email})
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={closeMenu}
+                  className="px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 text-center"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

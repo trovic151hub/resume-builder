@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react"
+import { useAuth } from "./AuthContext"
+import { createResume, updateResume, getResume } from "../services/firestoreService"
 
 const ResumeContext = createContext()
 
@@ -33,7 +35,11 @@ function migrateData(saved) {
 }
 
 export const ResumeProvider = ({ children }) => {
+  const { user } = useAuth()
   const [resumeData, setResumeData] = useState(defaultData)
+  const [activeResumeId, setActiveResumeId] = useState(null)
+  const [activeLabel, setActiveLabel] = useState("Untitled Resume")
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem("resumeData")
@@ -52,11 +58,60 @@ export const ResumeProvider = ({ children }) => {
 
   const resetData = () => {
     setResumeData(defaultData)
+    setActiveResumeId(null)
+    setActiveLabel("Untitled Resume")
     localStorage.removeItem("resumeData")
   }
 
+  const startNewResume = () => {
+    setResumeData(defaultData)
+    setActiveResumeId(null)
+    setActiveLabel("Untitled Resume")
+  }
+
+  const loadResume = async (resumeId) => {
+    if (!user) return
+    const resume = await getResume(user.uid, resumeId)
+    if (!resume) return
+    setResumeData(migrateData(resume.data))
+    setActiveResumeId(resume.id)
+    setActiveLabel(resume.label || "Untitled Resume")
+  }
+
+  const saveToCloud = async (label) => {
+    if (!user) return null
+    setSaving(true)
+    try {
+      const nextLabel = label ?? activeLabel
+      if (activeResumeId) {
+        await updateResume(user.uid, activeResumeId, resumeData, nextLabel)
+      } else {
+        const id = await createResume(user.uid, resumeData, nextLabel)
+        setActiveResumeId(id)
+      }
+      setActiveLabel(nextLabel)
+      return activeResumeId
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
-    <ResumeContext.Provider value={{ resumeData, setResumeData, resetData, defaultData }}>
+    <ResumeContext.Provider
+      value={{
+        resumeData,
+        setResumeData,
+        resetData,
+        defaultData,
+        activeResumeId,
+        activeLabel,
+        setActiveLabel,
+        saving,
+        startNewResume,
+        loadResume,
+        saveToCloud,
+      }}
+    >
       {children}
     </ResumeContext.Provider>
   )

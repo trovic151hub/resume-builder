@@ -5,7 +5,8 @@ import Template1 from "../components/templates/Template1"
 import Template2 from "../components/templates/Template2"
 import Template3 from "../components/templates/Template3"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
 
 const templates = { template1: Template1, template2: Template2, template3: Template3 }
 
@@ -131,11 +132,19 @@ function computeProgress(data) {
 }
 
 export default function Builder() {
-  const { resumeData, setResumeData, resetData } = useResume()
+  const { resumeData, setResumeData, resetData, saveToCloud, saving, activeResumeId } = useResume()
+  const { user } = useAuth()
   const SelectedTemplate = templates[resumeData.template]
   const progress = computeProgress(resumeData)
+  const [justSaved, setJustSaved] = React.useState(false)
 
   const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
+
+  const handleSave = async () => {
+    await saveToCloud()
+    setJustSaved(true)
+    setTimeout(() => setJustSaved(false), 2000)
+  }
 
   React.useEffect(() => {
     const parsed = skillsRaw.split(",").map(s => s.trim()).filter(Boolean)
@@ -175,6 +184,18 @@ export default function Builder() {
             <p className="text-sm text-slate-500 mt-1">Fill in your details and watch your resume come to life.</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            {user && (
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 text-sm font-medium border border-slate-200 hover:border-indigo-200 disabled:opacity-60 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
+              >
+                {justSaved ? <Check className="w-4 h-4 text-emerald-500" /> : <Save className="w-4 h-4" />}
+                <span className="hidden sm:inline">
+                  {saving ? "Saving..." : justSaved ? "Saved" : activeResumeId ? "Update" : "Save"}
+                </span>
+              </button>
+            )}
             <button
               onClick={() => { if (confirm("Clear all data and start fresh?")) resetData() }}
               className="flex items-center gap-2 text-slate-500 hover:text-rose-600 text-sm font-medium border border-slate-200 hover:border-rose-200 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
