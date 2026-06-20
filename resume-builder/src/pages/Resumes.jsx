@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
-import { FileText, Plus, Trash2 } from "lucide-react"
+import { FileText, Plus, Trash2, Pencil, Check } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import { useResume } from "../context/ResumeContext"
-import { listResumes, deleteResume } from "../services/firestoreService"
+import { listResumes, deleteResume, renameResume } from "../services/firestoreService"
 
 export default function Resumes() {
   const { user } = useAuth()
   const { startNewResume, loadResume } = useResume()
   const [resumes, setResumes] = useState([])
   const [loading, setLoading] = useState(true)
+  const [editingId, setEditingId] = useState(null)
+  const [draftLabel, setDraftLabel] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -35,6 +37,20 @@ export default function Resumes() {
     if (!confirm("Delete this resume? This cannot be undone.")) return
     await deleteResume(user.uid, resumeId)
     setResumes((prev) => prev.filter((r) => r.id !== resumeId))
+  }
+
+  const startRename = (e, resume) => {
+    e.stopPropagation()
+    setEditingId(resume.id)
+    setDraftLabel(resume.label || "Untitled Resume")
+  }
+
+  const commitRename = async (e, resumeId) => {
+    e.stopPropagation()
+    const label = draftLabel.trim() || "Untitled Resume"
+    setEditingId(null)
+    await renameResume(user.uid, resumeId, label)
+    setResumes((prev) => prev.map((r) => (r.id === resumeId ? { ...r, label } : r)))
   }
 
   return (
@@ -80,17 +96,47 @@ export default function Resumes() {
                 <div className="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center">
                   <FileText className="w-4 h-4 text-indigo-600" />
                 </div>
-                <button
-                  onClick={(e) => handleDelete(e, resume.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all"
-                  aria-label="Delete resume"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                  {editingId === resume.id ? (
+                    <button
+                      onClick={(e) => commitRename(e, resume.id)}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50"
+                      aria-label="Save name"
+                    >
+                      <Check className="w-4 h-4" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => startRename(e, resume)}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                      aria-label="Rename resume"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                  )}
+                  <button
+                    onClick={(e) => handleDelete(e, resume.id)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50"
+                    aria-label="Delete resume"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <h3 className="font-semibold text-slate-800 text-sm truncate">
-                {resume.label || "Untitled Resume"}
-              </h3>
+              {editingId === resume.id ? (
+                <input
+                  autoFocus
+                  value={draftLabel}
+                  onChange={(e) => setDraftLabel(e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
+                  onKeyDown={(e) => { if (e.key === "Enter") commitRename(e, resume.id) }}
+                  className="w-full text-sm font-semibold text-slate-800 border border-indigo-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                />
+              ) : (
+                <h3 className="font-semibold text-slate-800 text-sm truncate">
+                  {resume.label || "Untitled Resume"}
+                </h3>
+              )}
               <p className="text-xs text-slate-400 mt-1">
                 {resume.data?.name || "No name set"}
               </p>

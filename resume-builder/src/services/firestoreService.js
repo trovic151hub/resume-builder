@@ -45,3 +45,7 @@ export async function updateResume(userId, resumeId, data, label) {
 export async function deleteResume(userId, resumeId) {
   await deleteDoc(doc(db, "users", userId, "resumes", resumeId))
 }
+
+export async function renameResume(userId, resumeId, label) {
+  await updateDoc(doc(db, "users", userId, "resumes", resumeId), { label, updatedAt: serverTimestamp() })
+}

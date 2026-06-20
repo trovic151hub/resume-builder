@@ -1,6 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import { useAuth } from "./AuthContext"
-import { createResume, updateResume, getResume } from "../services/firestoreService"
 
 const ResumeContext = createContext()
 
@@ -71,6 +70,7 @@ export const ResumeProvider = ({ children }) => {
 
   const loadResume = async (resumeId) => {
     if (!user) return
+    const { getResume } = await import("../services/firestoreService")
     const resume = await getResume(user.uid, resumeId)
     if (!resume) return
     setResumeData(migrateData(resume.data))
@@ -82,6 +82,7 @@ export const ResumeProvider = ({ children }) => {
     if (!user) return null
     setSaving(true)
     try {
+      const { createResume, updateResume } = await import("../services/firestoreService")
       const nextLabel = label ?? activeLabel
       if (activeResumeId) {
         await updateResume(user.uid, activeResumeId, resumeData, nextLabel)

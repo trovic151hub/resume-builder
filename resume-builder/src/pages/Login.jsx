@@ -9,9 +9,10 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [resetSent, setResetSent] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const { login, signup, loginWithGoogle } = useAuth()
+  const { login, signup, loginWithGoogle, resetPassword } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || "/resumes"
@@ -21,17 +22,27 @@ export default function Login() {
     setError("")
     setLoading(true)
     try {
-      if (mode === "login") {
+      if (mode === "reset") {
+        await resetPassword(email)
+        setResetSent(true)
+      } else if (mode === "login") {
         await login(email, password)
+        navigate(redirectTo, { replace: true })
       } else {
         await signup(email, password)
+        navigate(redirectTo, { replace: true })
       }
-      navigate(redirectTo, { replace: true })
     } catch (err) {
       setError(err.message.replace("Firebase: ", ""))
     } finally {
       setLoading(false)
     }
+  }
+
+  const switchMode = (next) => {
+    setMode(next)
+    setError("")
+    setResetSent(false)
   }
 
   const handleGoogle = async () => {
@@ -59,10 +70,14 @@ export default function Login() {
             <FileText className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-xl font-bold text-slate-800">
-            {mode === "login" ? "Welcome back" : "Create your account"}
+            {mode === "login" ? "Welcome back" : mode === "signup" ? "Create your account" : "Reset your password"}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            {mode === "login" ? "Sign in to access your resumes" : "Save and manage multiple resumes"}
+            {mode === "login"
+              ? "Sign in to access your resumes"
+              : mode === "signup"
+              ? "Save and manage multiple resumes"
+              : "We'll email you a link to reset it"}
           </p>
         </div>
 
@@ -72,62 +87,97 @@ export default function Login() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <div className="relative">
-            <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="email"
-              required
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
+        {mode === "reset" && resetSent ? (
+          <div className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-3 text-center">
+            Check your inbox for a password reset link.
           </div>
-          <div className="relative">
-            <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="password"
-              required
-              minLength={6}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
-          >
-            {loading ? "Please wait..." : mode === "login" ? "Sign In" : "Sign Up"}
-          </button>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <div className="relative">
+              <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="email"
+                required
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            {mode !== "reset" && (
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+            )}
+            {mode === "login" && (
+              <button
+                type="button"
+                onClick={() => switchMode("reset")}
+                className="self-end text-xs text-indigo-600 hover:underline -mt-1"
+              >
+                Forgot password?
+              </button>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+            >
+              {loading
+                ? "Please wait..."
+                : mode === "login"
+                ? "Sign In"
+                : mode === "signup"
+                ? "Sign Up"
+                : "Send Reset Link"}
+            </button>
+          </form>
+        )}
 
-        <div className="flex items-center gap-3 my-5">
-          <div className="h-px bg-slate-200 flex-1" />
-          <span className="text-xs text-slate-400">or</span>
-          <div className="h-px bg-slate-200 flex-1" />
-        </div>
+        {mode !== "reset" && (
+          <>
+            <div className="flex items-center gap-3 my-5">
+              <div className="h-px bg-slate-200 flex-1" />
+              <span className="text-xs text-slate-400">or</span>
+              <div className="h-px bg-slate-200 flex-1" />
+            </div>
 
-        <button
-          onClick={handleGoogle}
-          disabled={loading}
-          className="w-full border border-slate-200 hover:bg-slate-50 disabled:opacity-60 text-sm font-medium text-slate-700 px-4 py-2.5 rounded-lg transition-colors"
-        >
-          Continue with Google
-        </button>
+            <button
+              onClick={handleGoogle}
+              disabled={loading}
+              className="w-full border border-slate-200 hover:bg-slate-50 disabled:opacity-60 text-sm font-medium text-slate-700 px-4 py-2.5 rounded-lg transition-colors"
+            >
+              Continue with Google
+            </button>
+          </>
+        )}
 
         <p className="text-sm text-slate-500 text-center mt-6">
-          {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            type="button"
-            onClick={() => setMode(mode === "login" ? "signup" : "login")}
-            className="text-indigo-600 font-medium hover:underline"
-          >
-            {mode === "login" ? "Sign up" : "Sign in"}
-          </button>
+          {mode === "reset" ? (
+            <button type="button" onClick={() => switchMode("login")} className="text-indigo-600 font-medium hover:underline">
+              Back to sign in
+            </button>
+          ) : (
+            <>
+              {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+              <button
+                type="button"
+                onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+                className="text-indigo-600 font-medium hover:underline"
+              >
+                {mode === "login" ? "Sign up" : "Sign in"}
+              </button>
+            </>
+          )}
         </p>
 
         <Link to="/" className="block text-center text-xs text-slate-400 hover:text-slate-600 mt-4">
