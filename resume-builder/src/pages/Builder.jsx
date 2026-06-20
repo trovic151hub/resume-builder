@@ -18,7 +18,7 @@ const accentColors = [
 ]
 
 const inputClass =
-  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm placeholder-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition-all"
+  "w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm placeholder-slate-400 focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
 
 function FormField({ label, children }) {
   return (
@@ -101,19 +101,19 @@ export default function Builder() {
   const progressLabel = progress < 40 ? "Just started" : progress < 75 ? "Coming along" : progress < 100 ? "Almost there!" : "Complete!"
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-paper">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 sm:justify-between mb-6 sm:mb-8">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Resume Builder</h1>
+            <h1 className="font-display text-xl sm:text-2xl font-semibold text-slate-900">Resume Builder</h1>
             {user ? (
               <input
                 value={activeLabel}
                 onChange={(e) => setActiveLabel(e.target.value)}
                 placeholder="Untitled Resume"
-                className="text-sm text-slate-500 mt-1 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-indigo-400 focus:outline-none transition-colors"
+                className="text-sm text-slate-500 mt-1 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-brand-400 focus:outline-none transition-colors"
               />
             ) : (
               <p className="text-sm text-slate-500 mt-1">Fill in your details and watch your resume come to life.</p>
@@ -124,7 +124,7 @@ export default function Builder() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 text-sm font-medium border border-slate-200 hover:border-indigo-200 disabled:opacity-60 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
+                className="flex items-center gap-2 text-slate-600 hover:text-brand-600 text-sm font-medium border border-slate-200 hover:border-brand-200 disabled:opacity-60 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
               >
                 {justSaved ? <Check className="w-4 h-4 text-emerald-500" /> : <Save className="w-4 h-4" />}
                 <span className="hidden sm:inline">
@@ -141,7 +141,7 @@ export default function Builder() {
             </button>
             <Link
               to="/preview"
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-colors shadow-sm"
+              className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl transition-colors shadow-sm"
             >
               <Eye className="w-4 h-4" />
               <span className="hidden sm:inline">Preview &amp; Export</span>
@@ -184,7 +184,7 @@ export default function Builder() {
                       key={t.value}
                       onClick={() => set("template", t.value)}
                       className={`rounded-xl border-2 p-2 text-left transition-all flex flex-col gap-2 ${
-                        isActive ? "border-indigo-500 bg-indigo-50 shadow-sm shadow-indigo-100" : "border-slate-200 hover:border-indigo-300 hover:bg-slate-50"
+                        isActive ? "border-brand-500 bg-brand-50 shadow-sm shadow-brand-100" : "border-slate-200 hover:border-brand-300 hover:bg-slate-50"
                       }`}
                     >
                       <div className={`w-full rounded-lg overflow-hidden h-14 sm:h-16 flex items-center justify-center ${isActive ? "bg-white" : "bg-slate-50"}`}>
@@ -193,7 +193,7 @@ export default function Builder() {
                         </div>
                       </div>
                       <div>
-                        <div className={`text-xs font-bold ${isActive ? "text-indigo-600" : "text-slate-700"}`}>{t.label}</div>
+                        <div className={`text-xs font-bold ${isActive ? "text-brand-600" : "text-slate-700"}`}>{t.label}</div>
                         <div className="text-xs text-slate-400 mt-0.5 hidden sm:block leading-tight">{t.desc}</div>
                       </div>
                     </button>
@@ -203,14 +203,14 @@ export default function Builder() {
 
               <Link
                 to="/templates"
-                className="flex items-center justify-between gap-2 w-full rounded-xl border-2 border-dashed border-slate-200 hover:border-indigo-300 hover:bg-slate-50 px-3 py-2.5 transition-all mb-4"
+                className="flex items-center justify-between gap-2 w-full rounded-xl border-2 border-dashed border-slate-200 hover:border-brand-300 hover:bg-slate-50 px-3 py-2.5 transition-all mb-4"
               >
                 <span className="flex items-center gap-2 text-xs font-semibold text-slate-600">
                   <Grid3x3 className="w-4 h-4" />
                   See all {templateOptions.length} templates
                 </span>
                 {!visibleTemplateOptions.some((t) => t.value === resumeData.template) && (
-                  <span className="text-xs font-medium text-indigo-600">
+                  <span className="text-xs font-medium text-brand-600">
                     Using: {templateOptions.find((t) => t.value === resumeData.template)?.label}
                   </span>
                 )}
@@ -357,7 +357,7 @@ export default function Builder() {
                   ))}
                   <button
                     onClick={addExp}
-                    className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-indigo-300 text-slate-500 hover:text-indigo-600 rounded-xl py-3 text-sm font-medium transition-colors"
+                    className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-brand-300 text-slate-500 hover:text-brand-600 rounded-xl py-3 text-sm font-medium transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     Add Another Position
@@ -395,7 +395,7 @@ export default function Builder() {
                   ))}
                   <button
                     onClick={addEdu}
-                    className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-indigo-300 text-slate-500 hover:text-indigo-600 rounded-xl py-3 text-sm font-medium transition-colors"
+                    className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-brand-300 text-slate-500 hover:text-brand-600 rounded-xl py-3 text-sm font-medium transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     Add Another Entry
@@ -434,8 +434,8 @@ export default function Builder() {
                   exit={{ opacity: 0 }}
                   className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl gap-3 pointer-events-none"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center">
-                    <Pencil className="w-6 h-6 text-indigo-400" />
+                  <div className="w-12 h-12 rounded-2xl bg-brand-50 flex items-center justify-center">
+                    <Pencil className="w-6 h-6 text-brand-400" />
                   </div>
                   <p className="text-sm font-semibold text-slate-700">Your resume appears here</p>
                   <p className="text-xs text-slate-400 text-center max-w-[160px] leading-relaxed">Start filling in your details on the left to see a live preview</p>
@@ -445,14 +445,14 @@ export default function Builder() {
           </div>
 
           {/* Mobile preview link banner */}
-          <div className="lg:hidden bg-indigo-50 border border-indigo-100 rounded-2xl p-4 flex items-center justify-between">
+          <div className="lg:hidden bg-brand-50 border border-brand-100 rounded-2xl p-4 flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-indigo-800">Ready to see it?</p>
-              <p className="text-xs text-indigo-500 mt-0.5">Tap to preview your resume</p>
+              <p className="text-sm font-semibold text-brand-800">Ready to see it?</p>
+              <p className="text-xs text-brand-500 mt-0.5">Tap to preview your resume</p>
             </div>
             <Link
               to="/preview"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors flex-shrink-0"
+              className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors flex-shrink-0"
             >
               Preview →
             </Link>

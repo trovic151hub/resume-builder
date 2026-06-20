@@ -50,10 +50,10 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" onClick={closeMenu} className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center flex-shrink-0">
             <FileText className="w-4 h-4 text-white" />
           </div>
-          <span className="font-bold text-slate-800 text-lg">ResumeForge</span>
+          <span className="font-display font-semibold text-slate-800 text-lg">ResumeForge</span>
         </Link>
 
         {/* Desktop nav */}
@@ -65,14 +65,14 @@ export default function Navbar() {
                 key={to}
                 to={to}
                 className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  active ? "text-indigo-600" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  active ? "text-brand-600" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 {label}
                 {active && (
                   <motion.span
                     layoutId="nav-indicator"
-                    className="absolute inset-0 bg-indigo-50 rounded-lg -z-10"
+                    className="absolute inset-0 bg-brand-50 rounded-lg -z-10"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -87,7 +87,7 @@ export default function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-semibold text-sm hover:bg-indigo-100 transition-colors"
+                className="w-9 h-9 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center font-semibold text-sm hover:bg-brand-100 transition-colors"
               >
                 {(user.email?.[0] || "U").toUpperCase()}
               </button>
@@ -132,7 +132,7 @@ export default function Navbar() {
           )}
           <Link
             to="/builder"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             Build My Resume
           </Link>
@@ -183,7 +183,7 @@ export default function Navbar() {
                     to={to}
                     onClick={closeMenu}
                     className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                      active ? "bg-indigo-50 text-indigo-600" : "text-slate-700 hover:bg-slate-50"
+                      active ? "bg-brand-50 text-brand-600" : "text-slate-700 hover:bg-slate-50"
                     }`}
                   >
                     {label}
@@ -193,7 +193,7 @@ export default function Navbar() {
               <Link
                 to="/builder"
                 onClick={closeMenu}
-                className="mt-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors text-center"
+                className="mt-1 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors text-center"
               >
                 Build My Resume
               </Link>

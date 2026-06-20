@@ -23,7 +23,7 @@ export default function Templates() {
         Back to Builder
       </button>
 
-      <h1 className="text-2xl font-bold text-slate-800 mb-1">Choose a Template</h1>
+      <h1 className="font-display text-2xl font-semibold text-slate-800 mb-1">Choose a Template</h1>
       <p className="text-sm text-slate-500 mb-8">Pick the design that best fits your style. You can switch anytime.</p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -37,7 +37,7 @@ export default function Templates() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
               className={`text-left rounded-2xl border-2 p-4 transition-all flex flex-col gap-3 ${
-                isActive ? "border-indigo-500 bg-indigo-50 shadow-sm shadow-indigo-100" : "border-slate-200 hover:border-indigo-300 hover:shadow-md bg-white"
+                isActive ? "border-brand-500 bg-brand-50 shadow-sm shadow-brand-100" : "border-slate-200 hover:border-brand-300 hover:shadow-md bg-white"
               }`}
             >
               <div className={`relative w-full rounded-xl overflow-hidden aspect-[3/4] flex items-center justify-center ${isActive ? "bg-white" : "bg-slate-50"}`}>
@@ -45,13 +45,13 @@ export default function Templates() {
                   <t.Thumb />
                 </div>
                 {isActive && (
-                  <span className="absolute top-2 right-2 w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center">
+                  <span className="absolute top-2 right-2 w-6 h-6 rounded-full bg-brand-600 flex items-center justify-center">
                     <Check className="w-3.5 h-3.5 text-white" />
                   </span>
                 )}
               </div>
               <div>
-                <div className={`text-sm font-bold ${isActive ? "text-indigo-600" : "text-slate-800"}`}>{t.label}</div>
+                <div className={`text-sm font-bold ${isActive ? "text-brand-600" : "text-slate-800"}`}>{t.label}</div>
                 <div className="text-xs text-slate-400 mt-0.5">{t.desc}</div>
               </div>
             </motion.button>

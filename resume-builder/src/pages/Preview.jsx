@@ -100,14 +100,14 @@ export default function Preview() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-2xl shadow border border-slate-100 p-10 sm:p-16 text-center"
           >
-            <div className="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center mx-auto mb-4">
-              <FileText className="w-8 h-8 text-indigo-400" />
+            <div className="w-16 h-16 rounded-full bg-brand-50 flex items-center justify-center mx-auto mb-4">
+              <FileText className="w-8 h-8 text-brand-400" />
             </div>
-            <h2 className="text-xl font-bold text-slate-800 mb-2">Your resume is empty</h2>
+            <h2 className="font-display text-xl font-semibold text-slate-800 mb-2">Your resume is empty</h2>
             <p className="text-slate-500 text-sm mb-6">Head over to the builder and fill in your details to see a preview here.</p>
             <Link
               to="/builder"
-              className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
+              className="inline-block bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
             >
               Go to Builder →
             </Link>

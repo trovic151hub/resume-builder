@@ -59,17 +59,17 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 bg-slate-50">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 bg-paper">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-sm bg-white border border-slate-200 rounded-2xl shadow-sm p-8"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center mb-3">
+          <div className="w-10 h-10 rounded-lg bg-brand-600 flex items-center justify-center mb-3">
             <FileText className="w-5 h-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-slate-800">
+          <h1 className="font-display text-xl font-semibold text-slate-800">
             {mode === "login" ? "Welcome back" : mode === "signup" ? "Create your account" : "Reset your password"}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -101,7 +101,7 @@ export default function Login() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
               />
             </div>
             {mode !== "reset" && (
@@ -114,7 +114,7 @@ export default function Login() {
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
               </div>
             )}
@@ -122,7 +122,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => switchMode("reset")}
-                className="self-end text-xs text-indigo-600 hover:underline -mt-1"
+                className="self-end text-xs text-brand-600 hover:underline -mt-1"
               >
                 Forgot password?
               </button>
@@ -130,7 +130,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+              className="mt-1 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
             >
               {loading
                 ? "Please wait..."
@@ -163,7 +163,7 @@ export default function Login() {
 
         <p className="text-sm text-slate-500 text-center mt-6">
           {mode === "reset" ? (
-            <button type="button" onClick={() => switchMode("login")} className="text-indigo-600 font-medium hover:underline">
+            <button type="button" onClick={() => switchMode("login")} className="text-brand-600 font-medium hover:underline">
               Back to sign in
             </button>
           ) : (
@@ -172,7 +172,7 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => switchMode(mode === "login" ? "signup" : "login")}
-                className="text-indigo-600 font-medium hover:underline"
+                className="text-brand-600 font-medium hover:underline"
               >
                 {mode === "login" ? "Sign up" : "Sign in"}
               </button>

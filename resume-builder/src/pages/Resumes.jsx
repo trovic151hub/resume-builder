@@ -56,10 +56,10 @@ export default function Resumes() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-slate-800">My Resumes</h1>
+        <h1 className="font-display text-2xl font-semibold text-slate-800">My Resumes</h1>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
         >
           <Plus className="w-4 h-4" />
           New Resume
@@ -74,7 +74,7 @@ export default function Resumes() {
           <p className="text-slate-500 text-sm mb-4">You don't have any saved resumes yet.</p>
           <button
             onClick={handleCreate}
-            className="text-indigo-600 font-medium text-sm hover:underline"
+            className="text-brand-600 font-medium text-sm hover:underline"
           >
             Create your first resume
           </button>
@@ -90,11 +90,11 @@ export default function Resumes() {
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleOpen(resume.id) }}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="cursor-pointer text-left bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-indigo-200 transition-all group"
+              className="cursor-pointer text-left bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md hover:border-brand-200 transition-all group"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-indigo-600" />
+                <div className="w-9 h-9 rounded-lg bg-brand-50 flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-brand-600" />
                 </div>
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
                   {editingId === resume.id ? (
@@ -108,7 +108,7 @@ export default function Resumes() {
                   ) : (
                     <button
                       onClick={(e) => startRename(e, resume)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-brand-600 hover:bg-brand-50"
                       aria-label="Rename resume"
                     >
                       <Pencil className="w-4 h-4" />
@@ -130,7 +130,7 @@ export default function Resumes() {
                   onChange={(e) => setDraftLabel(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
                   onKeyDown={(e) => { if (e.key === "Enter") commitRename(e, resume.id) }}
-                  className="w-full text-sm font-semibold text-slate-800 border border-indigo-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full text-sm font-semibold text-slate-800 border border-brand-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-brand-100"
                 />
               ) : (
                 <h3 className="font-semibold text-slate-800 text-sm truncate">
