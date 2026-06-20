@@ -2,30 +2,8 @@ import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import { useResume } from "../context/ResumeContext"
 import { motion } from "framer-motion"
-import Template1 from "../components/templates/Template1"
-import Template2 from "../components/templates/Template2"
-import Template3 from "../components/templates/Template3"
-import Template4 from "../components/templates/Template4"
-import Template5 from "../components/templates/Template5"
-import Template6 from "../components/templates/Template6"
+import { templateComponents as templates, templateNames } from "../data/templates"
 import { ChevronLeft, Printer, Download, Loader2, FileText } from "lucide-react"
-
-const templates = {
-  template1: Template1,
-  template2: Template2,
-  template3: Template3,
-  template4: Template4,
-  template5: Template5,
-  template6: Template6,
-}
-const templateNames = {
-  template1: "Classic",
-  template2: "Sidebar",
-  template3: "Modern",
-  template4: "Minimal",
-  template5: "Executive",
-  template6: "Timeline",
-}
 
 export default function Preview() {
   const { resumeData } = useResume()

@@ -9,6 +9,7 @@ const Builder = lazy(() => import("./pages/Builder"))
 const Preview = lazy(() => import("./pages/Preview"))
 const Login = lazy(() => import("./pages/Login"))
 const Resumes = lazy(() => import("./pages/Resumes"))
+const Templates = lazy(() => import("./pages/Templates"))
 
 function PageFallback() {
   return <div className="min-h-[60vh] flex items-center justify-center text-slate-400 text-sm">Loading...</div>
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/builder" element={<Builder />} />
+          <Route path="/templates" element={<Templates />} />
           <Route path="/preview" element={<Preview />} />
           <Route path="/login" element={<Login />} />
           <Route
