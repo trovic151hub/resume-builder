@@ -103,7 +103,7 @@ export default function Resumes() {
                 <div className="w-9 h-9 rounded-lg bg-brand-50 flex items-center justify-center">
                   <FileText className="w-4 h-4 text-brand-600" />
                 </div>
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all">
                   {editingId === resume.id ? (
                     <button
                       onClick={(e) => commitRename(e, resume.id)}
