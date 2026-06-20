@@ -148,15 +148,31 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* Mobile menu backdrop */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={closeMenu}
+            className="md:hidden fixed inset-0 top-16 z-40 bg-slate-900/30 backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            key="mobile-menu"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden border-t border-slate-100 bg-white"
+            className="md:hidden absolute top-16 inset-x-0 z-50 border-t border-slate-100 bg-white shadow-lg"
           >
             <div className="px-4 py-3 flex flex-col gap-1">
               {links.map(({ to, label }) => {
