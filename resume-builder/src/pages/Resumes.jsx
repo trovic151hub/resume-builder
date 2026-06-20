@@ -5,6 +5,7 @@ import { FileText, Plus, Trash2, Pencil, Check } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import { useResume } from "../context/ResumeContext"
 import { listResumes, deleteResume, renameResume } from "../services/firestoreService"
+import ConfirmDialog from "../components/ConfirmDialog"
 
 export default function Resumes() {
   const { user } = useAuth()
@@ -13,6 +14,7 @@ export default function Resumes() {
   const [loading, setLoading] = useState(true)
   const [editingId, setEditingId] = useState(null)
   const [draftLabel, setDraftLabel] = useState("")
+  const [deleteTarget, setDeleteTarget] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -32,9 +34,14 @@ export default function Resumes() {
     navigate("/builder")
   }
 
-  const handleDelete = async (e, resumeId) => {
+  const handleDelete = (e, resumeId) => {
     e.stopPropagation()
-    if (!confirm("Delete this resume? This cannot be undone.")) return
+    setDeleteTarget(resumeId)
+  }
+
+  const confirmDelete = async () => {
+    const resumeId = deleteTarget
+    setDeleteTarget(null)
     await deleteResume(user.uid, resumeId)
     setResumes((prev) => prev.filter((r) => r.id !== resumeId))
   }
@@ -144,6 +151,15 @@ export default function Resumes() {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete this resume?"
+        message="This cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   )
 }

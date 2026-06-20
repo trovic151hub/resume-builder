@@ -5,6 +5,7 @@ import { templateComponents as templates, templateOptions } from "../data/templa
 import { motion, AnimatePresence } from "framer-motion"
 import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3 } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
+import ConfirmDialog from "../components/ConfirmDialog"
 
 const visibleTemplateOptions = templateOptions.slice(0, 3)
 
@@ -92,6 +93,7 @@ export default function Builder() {
   const progress = computeProgress(resumeData)
   const [justSaved, setJustSaved] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState(formSections[0].id)
+  const [showClearConfirm, setShowClearConfirm] = React.useState(false)
 
   const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
 
@@ -184,7 +186,7 @@ export default function Builder() {
               </button>
             )}
             <button
-              onClick={() => { if (confirm("Clear all data and start fresh?")) resetData() }}
+              onClick={() => setShowClearConfirm(true)}
               className="flex items-center gap-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 text-sm font-medium px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
             >
               <Trash2 className="w-4 h-4" />
@@ -513,6 +515,15 @@ export default function Builder() {
 
         </div>
       </div>
+
+      <ConfirmDialog
+        open={showClearConfirm}
+        title="Clear all data?"
+        message="This will reset your resume and remove everything you've entered. This can't be undone."
+        confirmLabel="Clear All"
+        onConfirm={() => { resetData(); setShowClearConfirm(false) }}
+        onCancel={() => setShowClearConfirm(false)}
+      />
     </div>
   )
 }
