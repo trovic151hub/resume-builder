@@ -5,8 +5,8 @@ import { LayoutTemplate, Eye, Save, Printer } from "lucide-react"
 const features = [
   {
     icon: <LayoutTemplate className="w-6 h-6" />,
-    title: "3 Professional Templates",
-    desc: "Classic, Sidebar, and Modern layouts — switch between them instantly with animated transitions.",
+    title: "6 Professional Templates",
+    desc: "From clean Classic to a bold Timeline layout — switch between them instantly with animated transitions.",
   },
   {
     icon: <Eye className="w-6 h-6" />,
@@ -49,7 +49,7 @@ export default function Home() {
             <span className="text-indigo-600">Gets You Hired</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-500 max-w-2xl mx-auto mb-8 sm:mb-10 px-2">
-            Create a polished, professional resume in minutes. Fill in your details, pick a template, and you're done — no sign-up required.
+            Create a polished, professional resume in minutes. Fill in your details, pick a template, and export — no account needed to get started.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
             <Link
@@ -83,7 +83,7 @@ export default function Home() {
               <svg className="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              <span className="text-xs text-slate-400 font-mono truncate">resumeforge.replit.app/builder</span>
+              <span className="text-xs text-slate-400 font-mono truncate">resumeforge.app/builder</span>
             </div>
           </div>
           {/* App content simulation */}
