@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react"
 import { Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
+import ScrollToTop from "./components/ScrollToTop"
 import "./App.css"
 
 const Home = lazy(() => import("./pages/Home"))
@@ -18,6 +19,7 @@ function PageFallback() {
 function App() {
   return (
     <div className="min-h-screen bg-paper">
+      <ScrollToTop />
       <Navbar />
       <Suspense fallback={<PageFallback />}>
         <Routes>
