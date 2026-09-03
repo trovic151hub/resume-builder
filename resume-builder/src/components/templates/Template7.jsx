@@ -53,8 +53,8 @@ export default function Template7({ data }) {
         className="w-[34%] min-w-[185px] text-white flex flex-col"
         style={{ backgroundColor: sidebarColor }}
       >
-        <div className="bg-slate-200 p-5">
-          <div className="aspect-square bg-slate-300 overflow-hidden">
+        <div className="h-[258px] bg-[#dfe6ee] px-5 pt-7 pb-6 flex items-start">
+          <div className="w-full aspect-square bg-slate-300 overflow-hidden shadow-sm">
             {data.photo ? (
               <img src={data.photo} alt="" className="w-full h-full object-cover" />
             ) : (
