@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- resume context intentionally exports its provider and hook */
 import { createContext, useContext, useState, useEffect } from "react"
 import { useAuth } from "./AuthContext"
 
@@ -11,6 +12,7 @@ const defaultData = {
   location: "",
   linkedin: "",
   website: "",
+  photo: "",
   summary: "",
   skills: [],
   experience: [{ id: 1, jobTitle: "", company: "", startDate: "", endDate: "", current: false, description: "" }],

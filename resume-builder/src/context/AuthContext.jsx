@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- auth context intentionally exports its provider and hook */
 import { createContext, useContext, useState, useEffect } from "react"
 import {
   onAuthStateChanged,

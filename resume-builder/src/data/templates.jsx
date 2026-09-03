@@ -5,6 +5,7 @@ import Template3 from "../components/templates/Template3"
 import Template4 from "../components/templates/Template4"
 import Template5 from "../components/templates/Template5"
 import Template6 from "../components/templates/Template6"
+import Template7 from "../components/templates/Template7"
 
 export const templateComponents = {
   template1: Template1,
@@ -13,6 +14,7 @@ export const templateComponents = {
   template4: Template4,
   template5: Template5,
   template6: Template6,
+  template7: Template7,
 }
 
 const TemplateThumbnailClassic = () => (
@@ -141,6 +143,31 @@ const TemplateThumbnailTimeline = () => (
   </svg>
 )
 
+const TemplateThumbnailLiveCareer = () => (
+  <svg viewBox="0 0 60 72" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="72" rx="3" fill="#f8fafc"/>
+    <rect x="0" y="0" width="21" height="72" rx="3" fill="#0f6b57"/>
+    <rect x="4" y="4" width="13" height="13" fill="#cbd5e1"/>
+    <rect x="5.5" y="5.5" width="10" height="10" rx="5" fill="#94a3b8"/>
+    <rect x="5" y="23" width="11" height="1.5" rx="0.75" fill="white" opacity="0.9"/>
+    <rect x="5" y="27" width="12" height="1.2" rx="0.6" fill="white" opacity="0.55"/>
+    <rect x="5" y="30" width="10" height="1.2" rx="0.6" fill="white" opacity="0.55"/>
+    <rect x="5" y="36" width="11" height="1.5" rx="0.75" fill="white" opacity="0.9"/>
+    <rect x="5" y="40" width="12" height="1.2" rx="0.6" fill="white" opacity="0.55"/>
+    <rect x="5" y="43" width="9" height="1.2" rx="0.6" fill="white" opacity="0.55"/>
+    <rect x="27" y="7" width="22" height="4" rx="1" fill="#0f6b57"/>
+    <rect x="27" y="17" width="26" height="1.5" rx="0.75" fill="#0f6b57" opacity="0.8"/>
+    <rect x="27" y="22" width="25" height="1.2" rx="0.6" fill="#cbd5e1"/>
+    <rect x="27" y="25" width="21" height="1.2" rx="0.6" fill="#cbd5e1"/>
+    <rect x="27" y="31" width="26" height="1.5" rx="0.75" fill="#0f6b57" opacity="0.8"/>
+    <rect x="27" y="36" width="24" height="1.2" rx="0.6" fill="#cbd5e1"/>
+    <rect x="27" y="39" width="20" height="1.2" rx="0.6" fill="#cbd5e1"/>
+    <rect x="27" y="45" width="26" height="1.5" rx="0.75" fill="#0f6b57" opacity="0.8"/>
+    <rect x="27" y="50" width="24" height="1.2" rx="0.6" fill="#cbd5e1"/>
+    <rect x="27" y="53" width="18" height="1.2" rx="0.6" fill="#cbd5e1"/>
+  </svg>
+)
+
 export const templateOptions = [
   { value: "template1", label: "Classic", desc: "Clean & traditional", Thumb: TemplateThumbnailClassic },
   { value: "template2", label: "Sidebar", desc: "Two-column layout", Thumb: TemplateThumbnailSidebar },
@@ -148,6 +175,7 @@ export const templateOptions = [
   { value: "template4", label: "Minimal", desc: "Centered & airy", Thumb: TemplateThumbnailMinimal },
   { value: "template5", label: "Executive", desc: "Banner & structured", Thumb: TemplateThumbnailExecutive },
   { value: "template6", label: "Timeline", desc: "Career timeline", Thumb: TemplateThumbnailTimeline },
+  { value: "template7", label: "LiveCareer", desc: "Photo sidebar", Thumb: TemplateThumbnailLiveCareer },
 ]
 
 export const templateNames = Object.fromEntries(templateOptions.map((t) => [t.value, t.label]))

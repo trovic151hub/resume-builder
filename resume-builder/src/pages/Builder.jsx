@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useResume } from "../context/ResumeContext"
 import { templateComponents as templates, templateOptions } from "../data/templates"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3 } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import ConfirmDialog from "../components/ConfirmDialog"
 
@@ -140,9 +140,21 @@ export default function Builder() {
     if (parsed.join(",") !== current.join(",")) {
       setSkillsRaw(current.join(", "))
     }
+    // This effect syncs external resume loads without fighting in-progress typing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumeData.skills])
 
   const set = (field, value) => setResumeData({ ...resumeData, [field]: value })
+
+  const handlePhotoUpload = (event) => {
+    const file = event.target.files?.[0]
+    if (!file || !file.type.startsWith("image/")) return
+
+    const reader = new FileReader()
+    reader.onload = () => set("photo", reader.result)
+    reader.readAsDataURL(file)
+    event.target.value = ""
+  }
 
   const updateExp = (id, field, value) =>
     set("experience", resumeData.experience.map(e => e.id === id ? { ...e, [field]: value } : e))
@@ -310,6 +322,37 @@ export default function Builder() {
               <div id="section-personal" className="scroll-mt-28">
                 <SectionHeader title="Personal Info" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="sm:col-span-2">
+                    <FormField label="Profile Photo">
+                      <div className="flex items-center gap-3">
+                        <div className="w-16 h-16 rounded-xl bg-slate-100 border border-slate-200 overflow-hidden flex-shrink-0">
+                          {resumeData.photo ? (
+                            <img src={resumeData.photo} alt="" className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Image className="w-6 h-6 text-slate-300" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <label className="cursor-pointer flex items-center gap-2 text-slate-600 hover:text-brand-600 text-sm font-medium border border-slate-200 hover:border-brand-200 px-3 py-2 rounded-xl transition-colors">
+                            <Image className="w-4 h-4" />
+                            Choose Photo
+                            <input type="file" accept="image/*" onChange={handlePhotoUpload} className="sr-only" />
+                          </label>
+                          {resumeData.photo && (
+                            <button
+                              onClick={() => set("photo", "")}
+                              className="flex items-center gap-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 text-sm font-medium px-3 py-2 rounded-xl transition-colors"
+                            >
+                              <X className="w-4 h-4" />
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </FormField>
+                  </div>
                   <FormField label="Full Name">
                     <input className={inputClass} placeholder="e.g. Jane Smith" value={resumeData.name} onChange={e => set("name", e.target.value)} />
                   </FormField>
