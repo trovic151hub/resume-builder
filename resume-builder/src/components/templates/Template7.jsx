@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 function SectionTitle({ children, light = false }) {
   return (
     <h2
-      className={`text-[10px] font-extrabold uppercase tracking-widest pb-1.5 mb-2.5 border-b ${
+      className={`text-[10px] font-extrabold uppercase tracking-widest mb-2.5 border-t pt-1.5 ${
         light ? "text-white border-white/60" : "text-slate-800 border-emerald-800/70"
       }`}
     >
@@ -53,8 +53,9 @@ export default function Template7({ data }) {
         className="w-[34%] min-w-[185px] text-white flex flex-col"
         style={{ backgroundColor: sidebarColor }}
       >
-        <div className="h-[258px] bg-[#dfe6ee] px-5 pt-7 pb-6 flex items-start">
-          <div className="w-full aspect-square bg-slate-300 overflow-hidden shadow-sm">
+        <div className="relative px-5 pt-7 pb-6">
+          <div className="absolute inset-x-0 top-0 h-[50%] bg-[#343836]" />
+          <div className="relative w-full aspect-square bg-slate-300 overflow-hidden shadow-sm">
             {data.photo ? (
               <img src={data.photo} alt="" className="w-full h-full object-cover" />
             ) : (
