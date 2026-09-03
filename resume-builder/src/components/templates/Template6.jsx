@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template6({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#4f46e5"
   const hasExperience = data.experience.some(e => e.jobTitle || e.company || e.description)
 
@@ -57,6 +59,17 @@ export default function Template6({ data }) {
                 ) : null
               ))}
             </div>
+          </section>
+        )}
+
+        {certifications.length > 0 && (
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Certifications</h2>
+            <ul className="list-disc pl-4 text-xs text-slate-600 leading-relaxed space-y-1">
+              {certifications.map((certification, i) => (
+                <li key={i} className="break-words">{certification}</li>
+              ))}
+            </ul>
           </section>
         )}
       </div>
@@ -115,6 +128,23 @@ export default function Template6({ data }) {
                   style={{ color: accent, borderColor: `${accent}33` }}
                 >
                   {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {languages.length > 0 && (
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Languages</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {languages.map((language, i) => (
+                <span
+                  key={i}
+                  className="text-xs font-medium px-2.5 py-1 rounded-md bg-white border break-words"
+                  style={{ color: accent, borderColor: `${accent}33` }}
+                >
+                  {language}
                 </span>
               ))}
             </div>

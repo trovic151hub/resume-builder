@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template2({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#4f46e5"
   const lightAccent = accent === "#4f46e5" ? "#a5b4fc" : accent
 
@@ -77,6 +79,20 @@ export default function Template2({ data }) {
             </div>
           </div>
         )}
+
+        {languages.length > 0 && (
+          <div>
+            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 sm:mb-3">Languages</h2>
+            <div className="flex flex-wrap sm:flex-col gap-2">
+              {languages.map((language, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: lightAccent }} />
+                  <span className="text-xs text-slate-200 break-words">{language}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}
@@ -132,6 +148,17 @@ export default function Template2({ data }) {
                 ) : null
               ))}
             </div>
+          </section>
+        )}
+
+        {certifications.length > 0 && (
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3 pb-1 border-b border-slate-100" style={{ color: accent }}>Certifications</h2>
+            <ul className="list-disc pl-4 text-xs text-slate-600 leading-relaxed space-y-1">
+              {certifications.map((certification, i) => (
+                <li key={i} className="break-words">{certification}</li>
+              ))}
+            </ul>
           </section>
         )}
       </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useResume } from "../context/ResumeContext"
 import { templateComponents as templates, templateOptions } from "../data/templates"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X, Award, Languages } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import ConfirmDialog from "../components/ConfirmDialog"
 
@@ -26,6 +26,8 @@ const formSections = [
   { id: "section-personal", label: "Personal Info" },
   { id: "section-summary", label: "Summary" },
   { id: "section-skills", label: "Skills" },
+  { id: "section-certifications", label: "Certifications" },
+  { id: "section-languages", label: "Languages" },
   { id: "section-experience", label: "Experience" },
   { id: "section-education", label: "Education" },
 ]
@@ -91,6 +93,8 @@ function computeProgress(data) {
     data.name, data.title, data.email, data.phone, data.location,
     data.linkedin, data.website, data.summary,
     data.skills.filter(Boolean).length > 0,
+    data.certifications.filter(Boolean).length > 0,
+    data.languages.filter(Boolean).length > 0,
     data.experience.some(e => e.jobTitle || e.company || e.description),
     data.education.some(e => e.degree || e.school),
   ]
@@ -107,6 +111,8 @@ export default function Builder() {
   const [showClearConfirm, setShowClearConfirm] = React.useState(false)
 
   const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
+  const [certificationsRaw, setCertificationsRaw] = React.useState(resumeData.certifications.join(", "))
+  const [languagesRaw, setLanguagesRaw] = React.useState(resumeData.languages.join(", "))
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
@@ -143,6 +149,26 @@ export default function Builder() {
     // This effect syncs external resume loads without fighting in-progress typing.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumeData.skills])
+
+  React.useEffect(() => {
+    const parsed = certificationsRaw.split(",").map(s => s.trim()).filter(Boolean)
+    const current = resumeData.certifications
+    if (parsed.join(",") !== current.join(",")) {
+      setCertificationsRaw(current.join(", "))
+    }
+    // This effect syncs external resume loads without fighting in-progress typing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeData.certifications])
+
+  React.useEffect(() => {
+    const parsed = languagesRaw.split(",").map(s => s.trim()).filter(Boolean)
+    const current = resumeData.languages
+    if (parsed.join(",") !== current.join(",")) {
+      setLanguagesRaw(current.join(", "))
+    }
+    // This effect syncs external resume loads without fighting in-progress typing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeData.languages])
 
   const set = (field, value) => setResumeData({ ...resumeData, [field]: value })
 
@@ -417,6 +443,68 @@ export default function Builder() {
                     {resumeData.skills.filter(Boolean).map((skill, i) => (
                       <span key={i} className="text-white text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: resumeData.accentColor }}>
                         {skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Certifications */}
+              <div id="section-certifications" className="scroll-mt-28">
+                <SectionHeader title="Certifications" />
+                <FormField label="Certifications (comma separated)">
+                  <IconInput
+                    icon={Award}
+                    className={inputClass}
+                    placeholder="e.g. Google Project Management, AWS Cloud Practitioner"
+                    value={certificationsRaw}
+                    onChange={e => {
+                      const raw = e.target.value
+                      setCertificationsRaw(raw)
+                      set("certifications", raw.split(",").map(s => s.trim()).filter(Boolean))
+                    }}
+                    onBlur={() => {
+                      const cleaned = resumeData.certifications.join(", ")
+                      setCertificationsRaw(cleaned)
+                    }}
+                  />
+                </FormField>
+                {resumeData.certifications.filter(Boolean).length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {resumeData.certifications.filter(Boolean).map((certification, i) => (
+                      <span key={i} className="text-white text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: resumeData.accentColor }}>
+                        {certification}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Languages */}
+              <div id="section-languages" className="scroll-mt-28">
+                <SectionHeader title="Languages" />
+                <FormField label="Languages (comma separated)">
+                  <IconInput
+                    icon={Languages}
+                    className={inputClass}
+                    placeholder="e.g. English - Fluent, Spanish - Conversational"
+                    value={languagesRaw}
+                    onChange={e => {
+                      const raw = e.target.value
+                      setLanguagesRaw(raw)
+                      set("languages", raw.split(",").map(s => s.trim()).filter(Boolean))
+                    }}
+                    onBlur={() => {
+                      const cleaned = resumeData.languages.join(", ")
+                      setLanguagesRaw(cleaned)
+                    }}
+                  />
+                </FormField>
+                {resumeData.languages.filter(Boolean).length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {resumeData.languages.filter(Boolean).map((language, i) => (
+                      <span key={i} className="text-white text-xs font-medium px-2.5 py-1 rounded-full" style={{ backgroundColor: resumeData.accentColor }}>
+                        {language}
                       </span>
                     ))}
                   </div>

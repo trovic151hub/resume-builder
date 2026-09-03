@@ -7,6 +7,8 @@ function lighten(hex) {
 
 export default function Template3({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#4f46e5"
 
   return (
@@ -85,6 +87,38 @@ export default function Template3({ data }) {
               ))}
             </div>
           </section>
+        )}
+
+        {(certifications.length > 0 || languages.length > 0) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {certifications.length > 0 && (
+              <section>
+                <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Certifications</h2>
+                <ul className="list-disc pl-4 text-xs text-slate-600 leading-relaxed space-y-1">
+                  {certifications.map((certification, i) => (
+                    <li key={i} className="break-words">{certification}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {languages.length > 0 && (
+              <section>
+                <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Languages</h2>
+                <div className="flex flex-wrap gap-2">
+                  {languages.map((language, i) => (
+                    <span
+                      key={i}
+                      className="text-xs font-semibold px-3 py-1 rounded-full border"
+                      style={{ backgroundColor: lighten(accent), color: accent, borderColor: `${accent}33` }}
+                    >
+                      {language}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         )}
 
         <div className="grid grid-cols-2 gap-6">

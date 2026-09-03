@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template4({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#4f46e5"
   const hasContact = data.email || data.phone || data.location || data.linkedin || data.website
 
@@ -72,6 +74,30 @@ export default function Template4({ data }) {
             {skills.map((s, i) => (
               <span key={i} className="text-xs text-slate-600">
                 {s}{i < skills.length - 1 && <span className="ml-3 text-slate-300">·</span>}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {certifications.length > 0 && (
+        <section className="mb-7">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4 text-center">Certifications</h2>
+          <div className="flex flex-col gap-2 text-center">
+            {certifications.map((certification, i) => (
+              <p key={i} className="text-xs text-slate-600 break-words">{certification}</p>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {languages.length > 0 && (
+        <section className="mb-7">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-3 text-center">Languages</h2>
+          <div className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+            {languages.map((language, i) => (
+              <span key={i} className="text-xs text-slate-600">
+                {language}{i < languages.length - 1 && <span className="ml-3 text-slate-300">Â·</span>}
               </span>
             ))}
           </div>

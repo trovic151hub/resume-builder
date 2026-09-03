@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
 
 export default function Template1({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#4f46e5"
   const hasContact = data.email || data.phone || data.location || data.linkedin || data.website
 
@@ -73,6 +75,30 @@ export default function Template1({ data }) {
             {skills.map((s, i) => (
               <span key={i} className="text-xs font-medium px-3 py-1 rounded-full" style={{ backgroundColor: `${accent}18`, color: accent }}>
                 {s}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {certifications.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Certifications</h2>
+          <ul className="list-disc pl-4 text-xs text-slate-600 leading-relaxed space-y-1">
+            {certifications.map((certification, i) => (
+              <li key={i} className="break-words">{certification}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {languages.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Languages</h2>
+          <div className="flex flex-wrap gap-2">
+            {languages.map((language, i) => (
+              <span key={i} className="text-xs font-medium px-3 py-1 rounded-full" style={{ backgroundColor: `${accent}18`, color: accent }}>
+                {language}
               </span>
             ))}
           </div>

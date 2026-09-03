@@ -27,6 +27,8 @@ function DateRange({ startDate, endDate, current, light = false }) {
 
 export default function Template7({ data }) {
   const skills = data.skills.filter(Boolean)
+  const certifications = (data.certifications || []).filter(Boolean)
+  const languages = (data.languages || []).filter(Boolean)
   const accent = data.accentColor || "#047857"
   const sidebarColor = accent === "#4f46e5" ? "#0f6b57" : accent
   const hasContact = data.email || data.phone || data.location || data.linkedin || data.website
@@ -118,6 +120,24 @@ export default function Template7({ data }) {
               </ul>
             </section>
           )}
+
+          {languages.length > 0 && (
+            <section>
+              <SectionTitle light>Languages</SectionTitle>
+              <div className="flex flex-col gap-2">
+                {languages.map((language, index) => (
+                  <div key={index}>
+                    <p className="text-[10px] font-bold leading-tight text-white break-words">{language}</p>
+                    <div className="mt-1 h-1.5 grid grid-cols-5 gap-1">
+                      {Array.from({ length: 5 }).map((_, dotIndex) => (
+                        <span key={dotIndex} className="bg-white/85" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </aside>
 
@@ -176,6 +196,17 @@ export default function Template7({ data }) {
                 ) : null
               ))}
             </div>
+          </section>
+        )}
+
+        {certifications.length > 0 && (
+          <section className="mb-5">
+            <SectionTitle>Certifications</SectionTitle>
+            <ul className="list-disc pl-4 text-[10px] leading-relaxed text-slate-600 space-y-1">
+              {certifications.map((certification, index) => (
+                <li key={index} className="break-words">{certification}</li>
+              ))}
+            </ul>
           </section>
         )}
 
