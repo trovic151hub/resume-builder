@@ -4,6 +4,10 @@ import { useResume } from "../context/ResumeContext"
 import { motion } from "framer-motion"
 import { templateComponents as templates, templateNames } from "../data/templates"
 import { ChevronLeft, Printer, Download, Loader2, FileText } from "lucide-react"
+import { toPng } from "html-to-image"
+import jsPDF from "jspdf"
+
+const ONE_PAGE_FIT_TOLERANCE = 1.12
 
 export default function Preview() {
   const { resumeData } = useResume()
@@ -16,22 +20,60 @@ export default function Preview() {
     if (!resumeRef.current) return
     setExporting(true)
     try {
-      const [{ toPng }, { default: jsPDF }] = await Promise.all([
-        import("html-to-image"),
-        import("jspdf"),
-      ])
-      const dataUrl = await toPng(resumeRef.current, {
+      const resumeNode = resumeRef.current
+      const captureWidth = resumeNode.scrollWidth
+      const captureHeight = resumeNode.scrollHeight
+      const dataUrl = await toPng(resumeNode, {
         quality: 1,
         pixelRatio: 2,
         backgroundColor: "#ffffff",
+        cacheBust: true,
+        skipFonts: true,
+        width: captureWidth,
+        height: captureHeight,
+        style: {
+          border: "0",
+          borderRadius: "0",
+          boxShadow: "none",
+          margin: "0",
+          transform: "none",
+          transformOrigin: "top left",
+        },
       })
       const img = new Image()
       img.src = dataUrl
-      await new Promise((resolve) => { img.onload = resolve })
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
-      const pdfWidth = pdf.internal.pageSize.getWidth()
-      const pdfHeight = (img.height * pdfWidth) / img.width
-      pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight)
+      await new Promise((resolve, reject) => {
+        img.onload = resolve
+        img.onerror = reject
+      })
+      const a4Pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
+      const pageWidth = a4Pdf.internal.pageSize.getWidth()
+      const pageHeight = a4Pdf.internal.pageSize.getHeight()
+      const imageHeight = (img.height * pageWidth) / img.width
+      const pdf = imageHeight <= pageHeight
+        ? new jsPDF({ orientation: "portrait", unit: "mm", format: [pageWidth, imageHeight] })
+        : a4Pdf
+
+      if (imageHeight <= pageHeight) {
+        pdf.addImage(dataUrl, "PNG", 0, 0, pageWidth, imageHeight)
+      } else if (imageHeight <= pageHeight * ONE_PAGE_FIT_TOLERANCE) {
+        const fitWidth = pageWidth * (pageHeight / imageHeight)
+        const xOffset = (pageWidth - fitWidth) / 2
+        pdf.addImage(dataUrl, "PNG", xOffset, 0, fitWidth, pageHeight)
+      } else {
+        let yOffset = 0
+        let remainingHeight = imageHeight
+
+        while (remainingHeight > 0) {
+          pdf.addImage(dataUrl, "PNG", 0, yOffset, pageWidth, imageHeight)
+          remainingHeight -= pageHeight
+          yOffset -= pageHeight
+
+          if (remainingHeight > 0) {
+            pdf.addPage()
+          }
+        }
+      }
       const filename = resumeData.name
         ? `${resumeData.name.replace(/\s+/g, "_")}_Resume.pdf`
         : "Resume.pdf"
@@ -93,7 +135,7 @@ export default function Preview() {
       </div>
 
       {/* Resume sheet */}
-      <div className="max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
+      <div className="print-page max-w-4xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
         {!hasData ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -116,7 +158,7 @@ export default function Preview() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden"
+            className="print-sheet bg-white rounded-2xl shadow-lg border border-slate-100 overflow-hidden"
             ref={resumeRef}
           >
             <SelectedTemplate data={resumeData} />

@@ -20,7 +20,51 @@ textarea {
 }
 
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  html,
+  body,
+  #root {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff !important;
+  }
+
   .no-print {
     display: none !important;
+  }
+
+  .print-page {
+    width: 210mm !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .print-sheet {
+    width: 210mm !important;
+    min-height: 297mm;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .print-sheet * {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .print-sheet section,
+  .print-sheet article {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
