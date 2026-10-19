@@ -1,12 +1,14 @@
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Link2, Globe, GitFork } from "lucide-react"
+import ProjectEntry from "./ProjectEntry"
 
 export default function Template4({ data }) {
   const skills = data.skills.filter(Boolean)
   const certifications = (data.certifications || []).filter(Boolean)
   const languages = (data.languages || []).filter(Boolean)
+  const projects = (data.projects || []).filter(project => project.name || project.description)
   const accent = data.accentColor || "#4f46e5"
-  const hasContact = data.email || data.phone || data.location || data.linkedin || data.website
+  const hasContact = data.email || data.phone || data.location || data.linkedin || data.github || data.website
 
   return (
     <motion.div
@@ -47,6 +49,12 @@ export default function Template4({ data }) {
               <span className="flex items-center gap-1">
                 <Link2 className="w-3 h-3 flex-shrink-0" />
                 {data.linkedin}
+              </span>
+            )}
+            {data.github && (
+              <span className="flex items-center gap-1">
+                <GitFork className="w-3 h-3 flex-shrink-0" />
+                {data.github}
               </span>
             )}
             {data.website && (
@@ -128,6 +136,15 @@ export default function Template4({ data }) {
                 </div>
               ) : null
             ))}
+          </div>
+        </section>
+      )}
+
+      {projects.length > 0 && (
+        <section className="mb-7">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4 text-center">Selected Projects</h2>
+          <div className="flex flex-col gap-4">
+            {projects.map(project => <ProjectEntry key={project.id} project={project} centered />)}
           </div>
         </section>
       )}

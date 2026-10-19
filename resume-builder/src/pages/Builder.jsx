@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useResume } from "../context/ResumeContext"
 import { templateComponents as templates, templateOptions } from "../data/templates"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X, Award, Languages } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X, Award, Languages, GitFork, ExternalLink } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import ConfirmDialog from "../components/ConfirmDialog"
 
@@ -29,6 +29,7 @@ const formSections = [
   { id: "section-certifications", label: "Certifications" },
   { id: "section-languages", label: "Languages" },
   { id: "section-experience", label: "Experience" },
+  { id: "section-projects", label: "Projects" },
   { id: "section-education", label: "Education" },
 ]
 
@@ -64,11 +65,20 @@ function FormSectionNav({ activeSection, onNavigate }) {
   const activeRef = React.useRef(null)
 
   React.useEffect(() => {
-    activeRef.current?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" })
+    const rail = railRef.current
+    const active = activeRef.current
+    if (!rail || !active) return
+
+    const railRect = rail.getBoundingClientRect()
+    const activeRect = active.getBoundingClientRect()
+    rail.scrollTo({
+      left: rail.scrollLeft + activeRect.left - railRect.left - (rail.clientWidth - active.clientWidth) / 2,
+      behavior: "smooth",
+    })
   }, [activeSection])
 
   return (
-    <div ref={railRef} className="sticky top-16 z-10 bg-white/95 backdrop-blur-sm border-b border-slate-100 px-4 sm:px-6 py-2 flex gap-1.5 overflow-x-auto">
+    <div ref={railRef} className="sticky top-16 lg:top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-slate-100 px-4 sm:px-6 py-2 flex gap-1.5 overflow-x-auto">
       {formSections.map((s) => {
         const isActive = activeSection === s.id
         return (
@@ -96,6 +106,7 @@ function computeProgress(data) {
     data.certifications.filter(Boolean).length > 0,
     data.languages.filter(Boolean).length > 0,
     data.experience.some(e => e.jobTitle || e.company || e.description),
+    (data.projects || []).some(project => project.name || project.description),
     data.education.some(e => e.degree || e.school),
   ]
   return Math.round((checks.filter(Boolean).length / checks.length) * 100)
@@ -108,6 +119,7 @@ export default function Builder() {
   const progress = computeProgress(resumeData)
   const [justSaved, setJustSaved] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState(formSections[0].id)
+  const formPanelRef = React.useRef(null)
   const [showClearConfirm, setShowClearConfirm] = React.useState(false)
 
   const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
@@ -117,11 +129,16 @@ export default function Builder() {
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id)
-        })
+        const nextSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
+        if (nextSection) setActiveSection(nextSection.target.id)
       },
-      { rootMargin: "-120px 0px -70% 0px", threshold: 0 }
+      {
+        root: window.matchMedia("(min-width: 1024px)").matches ? formPanelRef.current : null,
+        rootMargin: "-120px 0px -70% 0px",
+        threshold: 0,
+      }
     )
     formSections.forEach((s) => {
       const el = document.getElementById(s.id)
@@ -131,7 +148,22 @@ export default function Builder() {
   }, [])
 
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
+    const panel = formPanelRef.current
+    const section = document.getElementById(id)
+    if (!panel || !section) return
+
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      const panelTop = panel.getBoundingClientRect().top + panel.clientTop
+      const sectionTop = section.getBoundingClientRect().top
+      const navHeight = panel.querySelector("[data-section-nav]")?.getBoundingClientRect().height || 0
+      panel.scrollTo({
+        top: panel.scrollTop + sectionTop - panelTop - navHeight,
+        behavior: "smooth",
+      })
+      return
+    }
+
+    section.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
   const handleSave = async () => {
@@ -189,6 +221,13 @@ export default function Builder() {
   const removeExp = (id) =>
     set("experience", resumeData.experience.filter(e => e.id !== id))
 
+  const updateProject = (id, field, value) =>
+    set("projects", (resumeData.projects || []).map(project => project.id === id ? { ...project, [field]: value } : project))
+  const addProject = () =>
+    set("projects", [...(resumeData.projects || []), { id: Date.now(), name: "", type: "", technologies: "", url: "", description: "" }])
+  const removeProject = (id) =>
+    set("projects", (resumeData.projects || []).filter(project => project.id !== id))
+
   const updateEdu = (id, field, value) =>
     set("education", resumeData.education.map(e => e.id === id ? { ...e, [field]: value } : e))
   const addEdu = () =>
@@ -200,8 +239,8 @@ export default function Builder() {
   const progressLabel = progress < 40 ? "Just started" : progress < 75 ? "Coming along" : progress < 100 ? "Almost there!" : "Complete!"
 
   return (
-    <div className="min-h-screen bg-paper">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div className="min-h-screen bg-paper lg:h-[calc(100vh-4rem)] lg:min-h-0 lg:overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 lg:flex lg:h-full lg:flex-col lg:py-6">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-0 sm:justify-between mb-6 sm:mb-8">
@@ -252,10 +291,10 @@ export default function Builder() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        <div className="grid lg:grid-cols-2 lg:grid-rows-1 gap-6 lg:gap-8 items-start lg:items-stretch lg:flex-1 lg:min-h-0">
 
           {/* FORM */}
-          <div className="min-w-0 bg-white rounded-2xl border border-slate-100 shadow-sm">
+          <div ref={formPanelRef} className="min-w-0 bg-white rounded-2xl border border-slate-100 shadow-sm lg:h-full lg:min-h-0 lg:overflow-y-auto lg:overscroll-y-contain">
 
             {/* Progress bar */}
             <div className="px-4 sm:px-6 pt-5 pb-4 border-b border-slate-100 rounded-t-2xl overflow-hidden">
@@ -275,7 +314,9 @@ export default function Builder() {
               </div>
             </div>
 
-            <FormSectionNav activeSection={activeSection} onNavigate={scrollToSection} />
+            <div data-section-nav>
+              <FormSectionNav activeSection={activeSection} onNavigate={scrollToSection} />
+            </div>
 
             {/* Template picker */}
             <div id="section-template" className="scroll-mt-28 px-4 sm:px-6 pt-5 pb-5 border-b border-slate-100">
@@ -396,6 +437,9 @@ export default function Builder() {
                   </FormField>
                   <FormField label="LinkedIn">
                     <IconInput icon={Link2} className={inputClass} placeholder="linkedin.com/in/yourname" value={resumeData.linkedin} onChange={e => set("linkedin", e.target.value)} />
+                  </FormField>
+                  <FormField label="GitHub">
+                    <IconInput icon={GitFork} className={inputClass} placeholder="github.com/yourname" value={resumeData.github || ""} onChange={e => set("github", e.target.value)} />
                   </FormField>
                   <div className="sm:col-span-2">
                     <FormField label="Website / Portfolio">
@@ -562,6 +606,51 @@ export default function Builder() {
                 </div>
               </div>
 
+              {/* Selected Projects */}
+              <div id="section-projects" className="scroll-mt-28">
+                <SectionHeader title="Selected Projects" />
+                <div className="flex flex-col gap-4">
+                  {(resumeData.projects || []).map((project, idx) => (
+                    <div key={project.id} className="border border-slate-200 rounded-xl p-4 flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-500">Project {idx + 1}</span>
+                        <button onClick={() => removeProject(project.id)} className="text-xs text-rose-400 hover:text-rose-600 transition-colors">Remove</button>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <FormField label="Project Name">
+                          <input className={inputClass} placeholder="e.g. Skinova Glow" value={project.name} onChange={e => updateProject(project.id, "name", e.target.value)} />
+                        </FormField>
+                        <FormField label="Project Type">
+                          <input className={inputClass} placeholder="e.g. E-commerce platform" value={project.type} onChange={e => updateProject(project.id, "type", e.target.value)} />
+                        </FormField>
+                        <FormField label="Technologies">
+                          <input className={inputClass} placeholder="e.g. React, Firebase, Tailwind CSS" value={project.technologies} onChange={e => updateProject(project.id, "technologies", e.target.value)} />
+                        </FormField>
+                        <FormField label="Project URL">
+                          <IconInput icon={ExternalLink} className={inputClass} placeholder="your-project.vercel.app" value={project.url} onChange={e => updateProject(project.id, "url", e.target.value)} />
+                        </FormField>
+                      </div>
+                      <FormField label="Highlights and outcomes">
+                        <textarea
+                          className={`${inputClass} resize-none`}
+                          rows={3}
+                          placeholder="Describe what you built, key features, and impact. Put each achievement on a new line."
+                          value={project.description}
+                          onChange={e => updateProject(project.id, "description", e.target.value)}
+                        />
+                      </FormField>
+                    </div>
+                  ))}
+                  <button
+                    onClick={addProject}
+                    className="flex items-center justify-center gap-2 border-2 border-dashed border-slate-200 hover:border-brand-300 text-slate-500 hover:text-brand-600 rounded-xl py-3 text-sm font-medium transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Project
+                  </button>
+                </div>
+              </div>
+
               {/* Education */}
               <div id="section-education" className="scroll-mt-28">
                 <SectionHeader title="Education" />
@@ -604,7 +693,7 @@ export default function Builder() {
           </div>
 
           {/* LIVE PREVIEW — hidden on mobile, shown on desktop */}
-          <div className="hidden lg:block sticky top-24">
+          <div className="hidden lg:flex lg:h-full lg:min-h-0 lg:flex-col">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wide">Live Preview</h2>
               <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -612,7 +701,7 @@ export default function Builder() {
                 Auto-saving
               </span>
             </div>
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden relative">
+            <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain bg-white rounded-2xl border border-slate-100 shadow-sm">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={resumeData.template}

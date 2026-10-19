@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Link2, Globe, GitFork } from "lucide-react"
+import ProjectEntry from "./ProjectEntry"
 
 function SectionTitle({ children, light = false }) {
   return (
@@ -29,9 +30,10 @@ export default function Template7({ data }) {
   const skills = data.skills.filter(Boolean)
   const certifications = (data.certifications || []).filter(Boolean)
   const languages = (data.languages || []).filter(Boolean)
+  const projects = (data.projects || []).filter(project => project.name || project.description)
   const accent = data.accentColor || "#047857"
   const sidebarColor = accent === "#4f46e5" ? "#0f6b57" : accent
-  const hasContact = data.email || data.phone || data.location || data.linkedin || data.website
+  const hasContact = data.email || data.phone || data.location || data.linkedin || data.github || data.website
   const hasExperience = data.experience.some((e) => e.jobTitle || e.company || e.description)
   const hasEducation = data.education.some((e) => e.degree || e.school)
   const initials = (data.name || "")
@@ -92,6 +94,12 @@ export default function Template7({ data }) {
                   <div className="flex items-start gap-2">
                     <Link2 className="w-3 h-3 mt-0.5 flex-shrink-0" />
                     <span className="break-all">{data.linkedin}</span>
+                  </div>
+                )}
+                {data.github && (
+                  <div className="flex items-start gap-2">
+                    <GitFork className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                    <span className="break-all">{data.github}</span>
                   </div>
                 )}
                 {data.website && (
@@ -176,6 +184,15 @@ export default function Template7({ data }) {
                   </article>
                 ) : null
               ))}
+            </div>
+          </section>
+        )}
+
+        {projects.length > 0 && (
+          <section className="mb-5">
+            <SectionTitle>Selected Projects</SectionTitle>
+            <div className="flex flex-col gap-3">
+              {projects.map(project => <ProjectEntry key={project.id} project={project} compact />)}
             </div>
           </section>
         )}

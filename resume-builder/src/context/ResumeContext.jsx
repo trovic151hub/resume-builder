@@ -11,12 +11,14 @@ const defaultData = {
   phone: "",
   location: "",
   linkedin: "",
+  github: "",
   website: "",
   photo: "",
   summary: "",
   skills: [],
   certifications: [],
   languages: [],
+  projects: [],
   experience: [{ id: 1, jobTitle: "", company: "", startDate: "", endDate: "", current: false, description: "" }],
   education: [{ id: 1, degree: "", school: "", year: "", gpa: "" }],
   template: "template1",
@@ -34,6 +36,7 @@ function migrateData(saved) {
   if (!data.accentColor) data.accentColor = "#4f46e5"
   if (!Array.isArray(data.certifications)) data.certifications = defaultData.certifications
   if (!Array.isArray(data.languages)) data.languages = defaultData.languages
+  if (!Array.isArray(data.projects)) data.projects = defaultData.projects
   if (!Array.isArray(data.experience)) data.experience = defaultData.experience
   if (!Array.isArray(data.education)) data.education = defaultData.education
   return data

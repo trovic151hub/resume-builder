@@ -1,10 +1,12 @@
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Link2, Globe, GitFork } from "lucide-react"
+import ProjectEntry from "./ProjectEntry"
 
 export default function Template6({ data }) {
   const skills = data.skills.filter(Boolean)
   const certifications = (data.certifications || []).filter(Boolean)
   const languages = (data.languages || []).filter(Boolean)
+  const projects = (data.projects || []).filter(project => project.name || project.description)
   const accent = data.accentColor || "#4f46e5"
   const hasExperience = data.experience.some(e => e.jobTitle || e.company || e.description)
 
@@ -62,6 +64,15 @@ export default function Template6({ data }) {
           </section>
         )}
 
+        {projects.length > 0 && (
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: accent }}>Selected Projects</h2>
+            <div className="flex flex-col gap-4">
+              {projects.map(project => <ProjectEntry key={project.id} project={project} />)}
+            </div>
+          </section>
+        )}
+
         {certifications.length > 0 && (
           <section>
             <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Certifications</h2>
@@ -79,7 +90,7 @@ export default function Template6({ data }) {
         className="sm:w-[34%] p-7 sm:p-8 flex flex-col gap-6 order-1 sm:order-2"
         style={{ backgroundColor: `${accent}0d` }}
       >
-        {(data.email || data.phone || data.location || data.linkedin || data.website) && (
+        {(data.email || data.phone || data.location || data.linkedin || data.github || data.website) && (
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Contact</h2>
             <div className="flex flex-col gap-2">
@@ -105,6 +116,12 @@ export default function Template6({ data }) {
                 <div className="flex items-start gap-2">
                   <Link2 className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: accent }} />
                   <p className="text-xs text-slate-600 break-all">{data.linkedin}</p>
+                </div>
+              )}
+              {data.github && (
+                <div className="flex items-start gap-2">
+                  <GitFork className="w-3 h-3 mt-0.5 flex-shrink-0" style={{ color: accent }} />
+                  <p className="text-xs text-slate-600 break-all">{data.github}</p>
                 </div>
               )}
               {data.website && (

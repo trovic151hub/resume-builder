@@ -1,10 +1,12 @@
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Link2, Globe, GitFork } from "lucide-react"
+import ProjectEntry from "./ProjectEntry"
 
 export default function Template5({ data }) {
   const skills = data.skills.filter(Boolean)
   const certifications = (data.certifications || []).filter(Boolean)
   const languages = (data.languages || []).filter(Boolean)
+  const projects = (data.projects || []).filter(project => project.name || project.description)
   const accent = data.accentColor || "#4f46e5"
   const initials = (data.name || "")
     .trim()
@@ -37,7 +39,7 @@ export default function Template5({ data }) {
       </div>
 
       {/* Contact bar */}
-      {(data.email || data.phone || data.location || data.linkedin || data.website) && (
+      {(data.email || data.phone || data.location || data.linkedin || data.github || data.website) && (
         <div className="flex flex-wrap gap-x-5 gap-y-1.5 px-8 py-3 bg-slate-50 border-b border-slate-100 text-xs text-slate-500">
           {data.email && (
             <span className="flex items-center gap-1.5">
@@ -61,6 +63,12 @@ export default function Template5({ data }) {
             <span className="flex items-center gap-1.5">
               <Link2 className="w-3 h-3 flex-shrink-0" />
               {data.linkedin}
+            </span>
+          )}
+          {data.github && (
+            <span className="flex items-center gap-1.5">
+              <GitFork className="w-3 h-3 flex-shrink-0" />
+              {data.github}
             </span>
           )}
           {data.website && (
@@ -155,6 +163,15 @@ export default function Template5({ data }) {
                     </div>
                   ) : null
                 ))}
+              </div>
+            </section>
+          )}
+
+          {projects.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: accent }}>Selected Projects</h2>
+              <div className="flex flex-col gap-3">
+                {projects.map(project => <ProjectEntry key={project.id} project={project} />)}
               </div>
             </section>
           )}

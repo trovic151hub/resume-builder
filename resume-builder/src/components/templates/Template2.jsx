@@ -1,10 +1,12 @@
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Link2, Globe } from "lucide-react"
+import { Mail, Phone, MapPin, Link2, Globe, GitFork } from "lucide-react"
+import ProjectEntry from "./ProjectEntry"
 
 export default function Template2({ data }) {
   const skills = data.skills.filter(Boolean)
   const certifications = (data.certifications || []).filter(Boolean)
   const languages = (data.languages || []).filter(Boolean)
+  const projects = (data.projects || []).filter(project => project.name || project.description)
   const accent = data.accentColor || "#4f46e5"
   const lightAccent = accent === "#4f46e5" ? "#a5b4fc" : accent
 
@@ -27,7 +29,7 @@ export default function Template2({ data }) {
         </div>
 
         {/* Contact */}
-        {(data.email || data.phone || data.location || data.linkedin || data.website) && (
+        {(data.email || data.phone || data.location || data.linkedin || data.github || data.website) && (
           <div>
             <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2 sm:mb-3">Contact</h2>
             <div className="flex flex-col gap-2">
@@ -53,6 +55,12 @@ export default function Template2({ data }) {
                 <div className="flex items-start gap-2">
                   <Link2 className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
                   <p className="text-xs text-slate-300 break-all">{data.linkedin}</p>
+                </div>
+              )}
+              {data.github && (
+                <div className="flex items-start gap-2">
+                  <GitFork className="w-3 h-3 text-slate-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-slate-300 break-all">{data.github}</p>
                 </div>
               )}
               {data.website && (
@@ -128,6 +136,15 @@ export default function Template2({ data }) {
                   </div>
                 ) : null
               ))}
+            </div>
+          </section>
+        )}
+
+        {projects.length > 0 && (
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-widest mb-3 pb-1 border-b border-slate-100" style={{ color: accent }}>Selected Projects</h2>
+            <div className="flex flex-col gap-3">
+              {projects.map(project => <ProjectEntry key={project.id} project={project} />)}
             </div>
           </section>
         )}
