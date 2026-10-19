@@ -18,7 +18,7 @@ export default function Template2({ data }) {
       className="flex flex-col sm:flex-row min-h-full font-sans"
     >
       {/* Sidebar */}
-      <div className="sm:w-2/5 text-white p-6 sm:p-7 flex flex-col gap-5 sm:gap-6" style={{ backgroundColor: "#1e293b" }}>
+      <div className="min-w-0 sm:w-[35%] sm:flex-none text-white p-6 sm:p-7 flex flex-col gap-5 sm:gap-6" style={{ backgroundColor: "#1e293b" }}>
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight leading-tight">
             {data.name || "Your Name"}
