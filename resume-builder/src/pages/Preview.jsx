@@ -8,6 +8,76 @@ import { toPng } from "html-to-image"
 import jsPDF from "jspdf"
 
 const ONE_PAGE_FIT_TOLERANCE = 1.12
+const TEXT_LAYER_FONT_SIZE = 2
+const TEXT_LAYER_LINE_HEIGHT = 0.8
+
+function buildResumeTextLines(data) {
+  const lines = []
+  const add = (value) => {
+    String(value || "")
+      .split(/\r?\n/)
+      .map((line) => line.replace(/[\u2022\u2013\u2014]/g, "-").trim())
+      .filter(Boolean)
+      .forEach((line) => lines.push(line))
+  }
+  const section = (title, values) => {
+    const content = values.filter(Boolean)
+    if (!content.length) return
+    add(title)
+    content.forEach(add)
+  }
+
+  add(data.name)
+  add(data.title)
+  add([data.email, data.phone, data.location, data.linkedin, data.github, data.website].filter(Boolean).join(" | "))
+  section("SUMMARY", [data.summary])
+  section("EXPERIENCE", (data.experience || []).map((item) => [
+    [item.jobTitle, item.company].filter(Boolean).join(" - "),
+    [item.startDate, item.current ? "Current" : item.endDate].filter(Boolean).join(" - "),
+    item.description,
+  ].filter(Boolean).join("\n")))
+  section("PROJECTS", (data.projects || []).map((item) => [
+    item.name,
+    item.type,
+    item.technologies,
+    item.url,
+    item.description,
+  ].filter(Boolean).join("\n")))
+  section("EDUCATION", (data.education || []).map((item) => [
+    item.degree,
+    item.school,
+    item.year,
+    item.gpa ? `GPA: ${item.gpa}` : "",
+  ].filter(Boolean).join("\n")))
+  section("SKILLS", [(data.skills || []).join(", ")])
+  section("CERTIFICATIONS", [(data.certifications || []).join("\n")])
+  section("LANGUAGES", [(data.languages || []).join("\n")])
+
+  return lines
+}
+
+function addExtractableText(pdf, data) {
+  const lines = buildResumeTextLines(data)
+  if (!lines.length) return
+
+  const pageHeight = pdf.internal.pageSize.getHeight()
+  const pageWidth = pdf.internal.pageSize.getWidth()
+  const margin = 3
+  const linesPerPage = Math.max(1, Math.floor((pageHeight - margin * 2) / TEXT_LAYER_LINE_HEIGHT))
+  const pageCount = pdf.getNumberOfPages()
+  const textLines = pdf.splitTextToSize(lines.join("\n"), pageWidth - margin * 2)
+
+  pdf.setFont("helvetica", "normal")
+  pdf.setFontSize(TEXT_LAYER_FONT_SIZE)
+  for (let index = 0; index < textLines.length; index += linesPerPage) {
+    const pageNumber = Math.min(Math.floor(index / linesPerPage) + 1, pageCount)
+    pdf.setPage(pageNumber)
+    pdf.text(textLines.slice(index, index + linesPerPage), margin, margin + TEXT_LAYER_FONT_SIZE * 0.35, {
+      renderingMode: "invisible",
+      lineHeightFactor: TEXT_LAYER_LINE_HEIGHT / (TEXT_LAYER_FONT_SIZE * 0.3528),
+    })
+  }
+}
 
 export default function Preview() {
   const { resumeData } = useResume()
@@ -74,6 +144,7 @@ export default function Preview() {
           }
         }
       }
+      addExtractableText(pdf, resumeData)
       const filename = resumeData.name
         ? `${resumeData.name.replace(/\s+/g, "_")}_Resume.pdf`
         : "Resume.pdf"
