@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useResume } from "../context/ResumeContext"
 import { templateComponents as templates, templateOptions } from "../data/templates"
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X, Award, Languages, GitFork, ExternalLink } from "lucide-react"
+import { Trash2, Eye, Plus, Pencil, Mail, Phone, MapPin, Link2, Globe, Save, Check, Grid3x3, Image, X, Award, Languages, GitFork, ExternalLink, Upload, Loader2 } from "lucide-react"
 import { useAuth } from "../context/AuthContext"
 import ConfirmDialog from "../components/ConfirmDialog"
 
@@ -120,6 +120,9 @@ export default function Builder() {
   const [justSaved, setJustSaved] = React.useState(false)
   const [activeSection, setActiveSection] = React.useState(formSections[0].id)
   const formPanelRef = React.useRef(null)
+  const pdfInputRef = React.useRef(null)
+  const [pdfImporting, setPdfImporting] = React.useState(false)
+  const [pdfImportStatus, setPdfImportStatus] = React.useState(null)
   const [showClearConfirm, setShowClearConfirm] = React.useState(false)
 
   const [skillsRaw, setSkillsRaw] = React.useState(resumeData.skills.join(", "))
@@ -214,6 +217,41 @@ export default function Builder() {
     event.target.value = ""
   }
 
+  const handlePdfImport = async (event) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+      setPdfImportStatus({ type: "error", message: "Choose a PDF file to import." })
+      event.target.value = ""
+      return
+    }
+
+    setPdfImporting(true)
+    setPdfImportStatus({ type: "progress", message: "Opening PDF...", progress: 0 })
+    try {
+      const { extractPdfText, parseResumeText } = await import("../services/resumePdfImport")
+      const result = await extractPdfText(file, ({ phase, progress }) => {
+        setPdfImportStatus({ type: "progress", message: phase, progress })
+      })
+      const imported = parseResumeText(result.text)
+      const fieldCount = Object.keys(imported).length
+      if (!fieldCount) throw new Error("The PDF was read, but no resume details could be identified.")
+
+      setResumeData((current) => ({ ...current, ...imported }))
+      const ocrNote = result.ocrPages ? ` OCR was used on ${result.ocrPages} page${result.ocrPages === 1 ? "" : "s"}.` : ""
+      setPdfImportStatus({
+        type: "success",
+        message: `Imported details from ${result.pageCount} page${result.pageCount === 1 ? "" : "s"}.${ocrNote} Review the fields for mistakes.`,
+      })
+    } catch (error) {
+      setPdfImportStatus({ type: "error", message: error.message || "Could not read this PDF. Try another file." })
+    } finally {
+      setPdfImporting(false)
+      event.target.value = ""
+    }
+  }
+
   const updateExp = (id, field, value) =>
     set("experience", resumeData.experience.map(e => e.id === id ? { ...e, [field]: value } : e))
   const addExp = () =>
@@ -261,6 +299,24 @@ export default function Builder() {
             )}
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
+            <input
+              ref={pdfInputRef}
+              type="file"
+              accept="application/pdf,.pdf"
+              onChange={handlePdfImport}
+              className="sr-only"
+            />
+            <button
+              type="button"
+              onClick={() => pdfInputRef.current?.click()}
+              disabled={pdfImporting}
+              title="Import details from a PDF"
+              aria-label="Import details from a PDF"
+              className="flex items-center gap-2 text-slate-600 hover:text-brand-600 text-sm font-medium border border-slate-200 hover:border-brand-200 disabled:opacity-60 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-colors"
+            >
+              {pdfImporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              <span className="hidden sm:inline">Import PDF</span>
+            </button>
             {user && (
               <button
                 onClick={handleSave}
@@ -290,6 +346,30 @@ export default function Builder() {
             </Link>
           </div>
         </div>
+
+        {pdfImportStatus && (
+          <div
+            role="status"
+            aria-live="polite"
+            className={`mb-4 rounded-lg border px-3 py-2 text-xs ${
+              pdfImportStatus.type === "error"
+                ? "border-rose-200 bg-rose-50 text-rose-700"
+                : pdfImportStatus.type === "success"
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                  : "border-slate-200 bg-white text-slate-600"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <span>{pdfImportStatus.message}</span>
+              {pdfImportStatus.type === "progress" && <span className="shrink-0">{pdfImportStatus.progress}%</span>}
+            </div>
+            {pdfImportStatus.type === "progress" && (
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-100">
+                <div className="h-full rounded-full bg-brand-500 transition-all" style={{ width: `${pdfImportStatus.progress}%` }} />
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-2 lg:grid-rows-1 gap-6 lg:gap-8 items-start lg:items-stretch lg:flex-1 lg:min-h-0">
 
