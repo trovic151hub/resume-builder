@@ -4,7 +4,7 @@ import { useResume } from "../context/ResumeContext"
 import { motion } from "framer-motion"
 import { templateComponents as templates, templateNames } from "../data/templates"
 import { ChevronLeft, Printer, Download, Loader2, FileText } from "lucide-react"
-import { toPng } from "html-to-image"
+import { toJpeg } from "html-to-image"
 import jsPDF from "jspdf"
 
 const ONE_PAGE_FIT_TOLERANCE = 1.12
@@ -93,8 +93,8 @@ export default function Preview() {
       const resumeNode = resumeRef.current
       const captureWidth = resumeNode.scrollWidth
       const captureHeight = resumeNode.scrollHeight
-      const dataUrl = await toPng(resumeNode, {
-        quality: 1,
+      const dataUrl = await toJpeg(resumeNode, {
+        quality: 0.9,
         pixelRatio: 2,
         backgroundColor: "#ffffff",
         cacheBust: true,
@@ -116,26 +116,26 @@ export default function Preview() {
         img.onload = resolve
         img.onerror = reject
       })
-      const a4Pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" })
+      const a4Pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true })
       const pageWidth = a4Pdf.internal.pageSize.getWidth()
       const pageHeight = a4Pdf.internal.pageSize.getHeight()
       const imageHeight = (img.height * pageWidth) / img.width
       const pdf = imageHeight <= pageHeight
-        ? new jsPDF({ orientation: "portrait", unit: "mm", format: [pageWidth, imageHeight] })
+        ? new jsPDF({ orientation: "portrait", unit: "mm", format: [pageWidth, imageHeight], compress: true })
         : a4Pdf
 
       if (imageHeight <= pageHeight) {
-        pdf.addImage(dataUrl, "PNG", 0, 0, pageWidth, imageHeight)
+        pdf.addImage(dataUrl, "JPEG", 0, 0, pageWidth, imageHeight)
       } else if (imageHeight <= pageHeight * ONE_PAGE_FIT_TOLERANCE) {
         const fitWidth = pageWidth * (pageHeight / imageHeight)
         const xOffset = (pageWidth - fitWidth) / 2
-        pdf.addImage(dataUrl, "PNG", xOffset, 0, fitWidth, pageHeight)
+        pdf.addImage(dataUrl, "JPEG", xOffset, 0, fitWidth, pageHeight)
       } else {
         let yOffset = 0
         let remainingHeight = imageHeight
 
         while (remainingHeight > 0) {
-          pdf.addImage(dataUrl, "PNG", 0, yOffset, pageWidth, imageHeight)
+          pdf.addImage(dataUrl, "JPEG", 0, yOffset, pageWidth, imageHeight)
           remainingHeight -= pageHeight
           yOffset -= pageHeight
 
